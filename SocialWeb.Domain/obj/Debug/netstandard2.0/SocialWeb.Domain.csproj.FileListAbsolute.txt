@@ -1,0 +1,9 @@
+C:\Users\celal\Documents\My Projects\SocialWeb\SocialWeb.Domain\bin\Debug\netstandard2.0\SocialWeb.Domain.deps.json
+C:\Users\celal\Documents\My Projects\SocialWeb\SocialWeb.Domain\bin\Debug\netstandard2.0\SocialWeb.Domain.dll
+C:\Users\celal\Documents\My Projects\SocialWeb\SocialWeb.Domain\bin\Debug\netstandard2.0\SocialWeb.Domain.pdb
+C:\Users\celal\Documents\My Projects\SocialWeb\SocialWeb.Domain\obj\Debug\netstandard2.0\SocialWeb.Domain.csprojAssemblyReference.cache
+C:\Users\celal\Documents\My Projects\SocialWeb\SocialWeb.Domain\obj\Debug\netstandard2.0\SocialWeb.Domain.AssemblyInfoInputs.cache
+C:\Users\celal\Documents\My Projects\SocialWeb\SocialWeb.Domain\obj\Debug\netstandard2.0\SocialWeb.Domain.AssemblyInfo.cs
+C:\Users\celal\Documents\My Projects\SocialWeb\SocialWeb.Domain\obj\Debug\netstandard2.0\SocialWeb.Domain.csproj.CoreCompileInputs.cache
+C:\Users\celal\Documents\My Projects\SocialWeb\SocialWeb.Domain\obj\Debug\netstandard2.0\SocialWeb.Domain.dll
+C:\Users\celal\Documents\My Projects\SocialWeb\SocialWeb.Domain\obj\Debug\netstandard2.0\SocialWeb.Domain.pdb
