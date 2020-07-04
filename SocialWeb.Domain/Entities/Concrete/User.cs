@@ -19,6 +19,7 @@ namespace SocialWeb.Domain.Entities.Concrete
             Followings = new List<Follow>();
         }
         public string Name { get; set; }
+        public string ImagePath { get; set; }
         public DateTime CreateDate { get { return DateTime.Now; } }
         public DateTime ModifiedDate { get; set; }
         public DateTime DeletedDate { get; set; }

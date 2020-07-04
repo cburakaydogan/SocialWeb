@@ -15,6 +15,7 @@ namespace SocialWeb.Domain.Entities.Concrete
         }
         public Guid Id { get; set; }
         public string Text { get; set; }
+        public string ImagePath { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
         public List<Like> Likes { get; set; }

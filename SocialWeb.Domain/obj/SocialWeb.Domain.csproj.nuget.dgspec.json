@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Domain\\SocialWeb.Domain.csproj": {}
+    "C:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Domain\\SocialWeb.Domain.csproj": {}
   },
   "projects": {
-    "c:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Domain\\SocialWeb.Domain.csproj": {
+    "C:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Domain\\SocialWeb.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Domain\\SocialWeb.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Domain\\SocialWeb.Domain.csproj",
         "projectName": "SocialWeb.Domain",
-        "projectPath": "c:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Domain\\SocialWeb.Domain.csproj",
+        "projectPath": "C:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Domain\\SocialWeb.Domain.csproj",
         "packagesPath": "C:\\Users\\celal\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Domain\\obj\\",
+        "outputPath": "C:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\celal\\AppData\\Roaming\\NuGet\\NuGet.Config"
