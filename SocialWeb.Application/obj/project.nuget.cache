@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "IALyB1d7GQXXkV/XcFrTVpOXr/teOvyGYMRa6ess9rYrjgUo5eg+H7wpeS3l+E/wpdeZ7o6vY117VDrzVeFf6g==",
+  "dgSpecHash": "D+qffvWFwh3hwxb4u+pZVJsoMAOtAbAswPRSqpmlIKANQwYdH1oHpmmXrTlcrIWCxS08w3LsHsejahvjyrE+ug==",
   "success": true,
-  "projectFilePath": "C:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Application\\SocialWeb.Application.csproj",
+  "projectFilePath": "c:\\Users\\celal\\Documents\\My Projects\\SocialWeb\\SocialWeb.Application\\SocialWeb.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\celal\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\celal\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
