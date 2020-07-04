@@ -47,7 +47,6 @@ namespace SocialWeb.Infrastructure.UnitOfWork
         }
 
         private IShareRepository _shareRepository;
-        private bool disposedValue;
 
         public IShareRepository Share
         {
