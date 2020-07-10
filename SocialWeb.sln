@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialWeb.Application", "So
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialWeb.IoC", "SocialWeb.IoC\SocialWeb.IoC.csproj", "{93844ABB-DF84-42E6-AB63-7C5F6448F7B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialWeb.Web", "SocialWeb.Web\SocialWeb.Web.csproj", "{712901D1-EBD8-48A2-8E43-45EDD709CBBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{93844ABB-DF84-42E6-AB63-7C5F6448F7B0}.Release|x64.Build.0 = Release|Any CPU
 		{93844ABB-DF84-42E6-AB63-7C5F6448F7B0}.Release|x86.ActiveCfg = Release|Any CPU
 		{93844ABB-DF84-42E6-AB63-7C5F6448F7B0}.Release|x86.Build.0 = Release|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Debug|x64.Build.0 = Debug|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Debug|x86.Build.0 = Debug|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Release|x64.ActiveCfg = Release|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Release|x64.Build.0 = Release|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Release|x86.ActiveCfg = Release|Any CPU
+		{712901D1-EBD8-48A2-8E43-45EDD709CBBC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
