@@ -9,7 +9,7 @@ namespace SocialWeb.Infrastructure.Mapping.Concrete
     {
         public override void Configure(EntityTypeBuilder<Like> builder)
         {
-            builder.HasKey(x => new { x.TweetId , x.UserId });
+            builder.HasKey(x => new { x.AppUserId , x.TweetId });
 
             base.Configure(builder);
         }

@@ -3,9 +3,10 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper" Version="10.0.0"/>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SocialWeb.Domain\SocialWeb.Domain.csproj" />
+    <ProjectReference Include="..\SocialWeb.Domain\SocialWeb.Domain.csproj"/>
   </ItemGroup>
 </Project>

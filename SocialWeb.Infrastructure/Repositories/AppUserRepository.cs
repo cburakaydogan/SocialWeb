@@ -4,9 +4,9 @@ using SocialWeb.Infrastructure.Context;
 
 namespace SocialWeb.Infrastructure.Repositories
 {
-    public class UserRepository: BaseRepository<User>, IUserRepository
+    public class AppUserRepository: BaseRepository<AppUser>, IAppUserRepository
     {
-        public UserRepository(ApplicationDbContext context) : base(context)
+        public AppUserRepository(ApplicationDbContext context) : base(context)
         {
 
         }

@@ -7,9 +7,9 @@ using SocialWeb.Domain.Enums;
 
 namespace SocialWeb.Domain.Entities.Concrete
 {
-    public class User : IdentityUser, IBaseEntity
+    public class AppUser : IdentityUser<int>, IBaseEntity
     {
-        public User()
+        public AppUser()
         {
             Tweets = new List<Tweet>();
             Shares = new List<Share>();
@@ -20,19 +20,16 @@ namespace SocialWeb.Domain.Entities.Concrete
         }
         public string Name { get; set; }
         public string ImagePath { get; set; }
-        public DateTime CreateDate { get { return DateTime.Now; } }
-        public DateTime ModifiedDate { get; set; }
-        public DateTime DeletedDate { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
         public Status Status { get; set; }
         public List<Tweet> Tweets { get; set; }
         public List<Share> Shares { get; set; }
         public List<Like> Likes { get; set; }
         public List<Mention> Mentions { get; set; }
-        
-        [InverseProperty("Follower")]
         public List<Follow> Followers { get; set; }
 
-        [InverseProperty("Following")]
         public List<Follow> Followings { get; set; }
     }
 }

@@ -11,8 +11,22 @@ namespace SocialWeb.Infrastructure.Mapping.Concrete
         {
 
             builder.HasKey(x => x.Id);
+
             builder.Property(x=> x.Text).HasColumnType("varchar(280)").IsRequired();
             builder.Property(x=> x.ImagePath).HasColumnType("varchar(100)").IsRequired(false);
+
+
+            builder.HasMany(x => x.Mentions)
+                .WithOne(x => x.Tweet)
+                .HasForeignKey(x => x.TweetId);
+
+            builder.HasMany(x => x.Likes)
+                .WithOne(x => x.Tweet)
+                .HasForeignKey(x => x.TweetId);
+
+            builder.HasMany(x => x.Shares)
+                .WithOne(x => x.Tweet)
+                .HasForeignKey(x => x.TweetId);
 
             base.Configure(builder);
         }

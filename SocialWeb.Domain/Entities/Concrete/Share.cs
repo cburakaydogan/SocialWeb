@@ -6,13 +6,13 @@ namespace SocialWeb.Domain.Entities.Concrete
 {
     public class Share : IBaseEntity    
     {
-        public Guid TweetId { get; set; }
+        public int TweetId { get; set; }
         public Tweet Tweet { get; set; }
-        public Guid UserId { get; set; }
-        public User User { get; set; }  
-        public DateTime CreateDate { get{ return DateTime.Now;} }
-        public DateTime ModifiedDate { get; set; }
-        public DateTime DeletedDate { get; set; }
+        public int AppUserId { get; set; }
+        public AppUser AppUser { get; set; }  
+        public DateTime CreateDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
         public Status Status { get; set; }
     }
 }

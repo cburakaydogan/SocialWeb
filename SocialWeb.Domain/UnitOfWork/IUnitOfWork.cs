@@ -9,10 +9,11 @@ namespace SocialWeb.Domain.UnitOfWork
     {
         ITweetRepository Tweet { get; }
         IMentionRepository Mention { get; }
-        IUserRepository User { get; }
+        IAppUserRepository AppUser { get; }
         IFollowRepository Follow { get; }
         ILikeRepository Like { get; }
         IShareRepository Share { get; }
         Task Commit();
+        void ExecuteSqlRaw(string sql, params object[] parameters);
     }
 }

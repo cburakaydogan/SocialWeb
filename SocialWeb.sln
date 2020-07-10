@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialWeb.Infrastructure", "SocialWeb.Infrastructure\SocialWeb.Infrastructure.csproj", "{BA60C815-1F9F-4E18-9217-73DF54DF971D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialWeb.Infrastructure", "SocialWeb.Infrastructure\SocialWeb.Infrastructure.csproj", "{BA60C815-1F9F-4E18-9217-73DF54DF971D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialWeb.Domain", "SocialWeb.Domain\SocialWeb.Domain.csproj", "{A0C965E9-B03F-4CA0-98AC-F2750F0C72F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialWeb.Domain", "SocialWeb.Domain\SocialWeb.Domain.csproj", "{A0C965E9-B03F-4CA0-98AC-F2750F0C72F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialWeb.Application", "SocialWeb.Application\SocialWeb.Application.csproj", "{C99A3AEC-AE3F-45D7-8B2D-CD09DC34D1A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialWeb.Application", "SocialWeb.Application\SocialWeb.Application.csproj", "{C99A3AEC-AE3F-45D7-8B2D-CD09DC34D1A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialWeb.IoC", "SocialWeb.IoC\SocialWeb.IoC.csproj", "{93844ABB-DF84-42E6-AB63-7C5F6448F7B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialWeb.IoC", "SocialWeb.IoC\SocialWeb.IoC.csproj", "{93844ABB-DF84-42E6-AB63-7C5F6448F7B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,9 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BA60C815-1F9F-4E18-9217-73DF54DF971D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -72,5 +69,11 @@ Global
 		{93844ABB-DF84-42E6-AB63-7C5F6448F7B0}.Release|x64.Build.0 = Release|Any CPU
 		{93844ABB-DF84-42E6-AB63-7C5F6448F7B0}.Release|x86.ActiveCfg = Release|Any CPU
 		{93844ABB-DF84-42E6-AB63-7C5F6448F7B0}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {954C44F5-424B-4A94-857A-65E02153395D}
 	EndGlobalSection
 EndGlobal
