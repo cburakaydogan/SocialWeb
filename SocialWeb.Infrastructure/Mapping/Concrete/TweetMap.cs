@@ -15,7 +15,6 @@ namespace SocialWeb.Infrastructure.Mapping.Concrete
             builder.Property(x=> x.Text).HasColumnType("varchar(280)").IsRequired();
             builder.Property(x=> x.ImagePath).HasColumnType("varchar(100)").IsRequired(false);
 
-
             builder.HasMany(x => x.Mentions)
                 .WithOne(x => x.Tweet)
                 .HasForeignKey(x => x.TweetId);

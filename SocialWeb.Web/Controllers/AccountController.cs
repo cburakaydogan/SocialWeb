@@ -1,12 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Application.Services.Abstract;
+using SocialWeb.Application.Services.Concrete;
 
 namespace SocialWeb.Web.Controllers
 {
-     [Authorize]
+    [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class AccountController : Controller
     {
         private readonly IAppUserService _userservice;
@@ -19,6 +23,7 @@ namespace SocialWeb.Web.Controllers
         {
             return View();
         }
+        #region Register
         [AllowAnonymous]
         public IActionResult Register()
         {
@@ -29,7 +34,7 @@ namespace SocialWeb.Web.Controllers
             return View();
         }
 
-        [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
+        [HttpPost, AllowAnonymous]
         public async Task<IActionResult> Register(RegisterDto model)
         {
             if (ModelState.IsValid)
@@ -50,7 +55,9 @@ namespace SocialWeb.Web.Controllers
 
             return View(model);
         }
+        #endregion
 
+        #region Login
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
@@ -62,7 +69,7 @@ namespace SocialWeb.Web.Controllers
             return View();
         }
 
-        [HttpPost,AllowAnonymous, ValidateAntiForgeryToken]
+        [HttpPost,AllowAnonymous]
         public async Task<IActionResult> Login(LoginDto model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -78,6 +85,67 @@ namespace SocialWeb.Web.Controllers
 
             return View(model);
         }
+        #endregion
+
+        
+        [AllowAnonymous]
+        public IActionResult ExternalLogin(string provider, string returnUrl)
+        {
+           var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            
+            AuthenticationProperties properties = _userservice.ExternalLogin(provider, redirectUrl);
+
+            return new ChallengeResult(provider, properties);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = "/")
+        {
+            var info = await _userservice.GetExternalLoginInfo();
+
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var signInResult = await _userservice.ExternalLoginSignIn(info.LoginProvider, info.ProviderKey);
+            if (signInResult.Succeeded)
+            {
+                return RedirectToLocal(returnUrl);
+            }
+            else
+            {
+                ViewData["ReturnUrl"] = returnUrl;
+                ViewData["Provider"] = info.LoginProvider;
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                return View("ExternalLoginConfirmation", new ExternalLoginDto { Email = email });
+            }
+        }
+        [HttpPost,AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginDto model, string returnUrl = "/")
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var info = await _userservice.GetExternalLoginInfo();
+            if (info == null)
+                return View();
+
+            var result = await _userservice.ExternalRegister(info,model);
+
+            if (result.Succeeded)
+            {
+                return RedirectToLocal(returnUrl);
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.TryAddModelError(error.Code, error.Description);
+            }
+
+            return View(nameof(ExternalLoginConfirmation), model);
+        }
+       
 
         [HttpPost]
         public async Task<IActionResult> LogOut()

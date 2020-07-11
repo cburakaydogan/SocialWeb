@@ -30,7 +30,8 @@ namespace SocialWeb.Web
                options.UseSqlServer(
                    Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<AppUser, AppRole>(x => {
+            services.AddIdentity<AppUser, AppRole>(x =>
+            {
                 x.SignIn.RequireConfirmedPhoneNumber = false;
                 x.SignIn.RequireConfirmedAccount = false;
                 x.SignIn.RequireConfirmedEmail = false;
@@ -39,12 +40,22 @@ namespace SocialWeb.Web
                 x.Password.RequiredUniqueChars = 0;
                 x.Password.RequireUppercase = false;
                 x.Password.RequireNonAlphanumeric = false;
-                x.Password.RequireLowercase = false;}).AddEntityFrameworkStores<ApplicationDbContext>();
+                x.Password.RequireLowercase = false;
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                IConfigurationSection googleAuthNSection =
+               Configuration.GetSection("Authentication:Google");
+                options.ClientId = googleAuthNSection["ClientId"];
+                options.ClientSecret = googleAuthNSection["ClientSecret"];
+            });
 
             services.RegisterServices();
             services.AddControllersWithViews()
                 .AddFluentValidation();
             services.AddTransient<IValidator<RegisterDto>, RegisterValidation>();
+            services.AddTransient<IValidator<ExternalLoginDto>, ExternalLoginValidation>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

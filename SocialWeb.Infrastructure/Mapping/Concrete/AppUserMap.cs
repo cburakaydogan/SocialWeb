@@ -12,7 +12,7 @@ namespace SocialWeb.Infrastructure.Mapping.Concrete
             builder.HasKey(x => x.Id);
             builder.Property(x => x.UserName).HasColumnType("nvarchar(50)");
             builder.Property(x => x.NormalizedUserName).HasColumnType("nvarchar(50)");
-            builder.Property(x => x.Name).HasColumnType("varchar(50)").IsRequired();
+            builder.Property(x => x.Name).HasColumnType("varchar(50)").IsRequired(false);
             builder.Property(x => x.ImagePath).HasColumnType("varchar(100)").IsRequired(false);
 
             builder.HasMany(x => x.Tweets)

@@ -10,6 +10,7 @@ namespace SocialWeb.Application.AutoMapper
         {
             CreateMap<AppUser, RegisterDto>().ReverseMap();
             CreateMap<AppUser, LoginDto>().ReverseMap();
+            CreateMap<AppUser, ExternalLoginDto>().ReverseMap();
         }
     }
 }
