@@ -1,4 +1,5 @@
 using AutoMapper;
+using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Domain.Entities.Concrete;
 
 namespace SocialWeb.Application.AutoMapper
@@ -7,7 +8,8 @@ namespace SocialWeb.Application.AutoMapper
     {
         public Mapping()
         {
-            
+            CreateMap<AppUser, RegisterDto>().ReverseMap();
+            CreateMap<AppUser, LoginDto>().ReverseMap();
         }
     }
 }

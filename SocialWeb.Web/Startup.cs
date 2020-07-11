@@ -1,9 +1,14 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SocialWeb.Application.Models.DTOs;
+using SocialWeb.Application.Validation.FluentValidation;
 using SocialWeb.Domain.Entities.Concrete;
 using SocialWeb.Infrastructure.Context;
 using SocialWeb.IoC;
@@ -24,10 +29,22 @@ namespace SocialWeb.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentity<AppUser, AppRole>(x => {
+                x.SignIn.RequireConfirmedPhoneNumber = false;
+                x.SignIn.RequireConfirmedAccount = false;
+                x.SignIn.RequireConfirmedEmail = false;
+                x.User.RequireUniqueEmail = true;
+                x.Password.RequiredLength = 1;
+                x.Password.RequiredUniqueChars = 0;
+                x.Password.RequireUppercase = false;
+                x.Password.RequireNonAlphanumeric = false;
+                x.Password.RequireLowercase = false;}).AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.RegisterServices();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddFluentValidation();
+            services.AddTransient<IValidator<RegisterDto>, RegisterValidation>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -44,6 +61,7 @@ namespace SocialWeb.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

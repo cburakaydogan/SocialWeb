@@ -12,8 +12,7 @@ namespace SocialWeb.Application.Validation.FluentValidation
                 .EmailAddress().WithMessage("Please enter a valid email address.");
 
             RuleFor(x => x.Password)
-                .NotEmpty().WithMessage("Please enter a password.")
-                .MinimumLength(8).MaximumLength(16).Matches("^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$").WithMessage("Minimum one letter and one number.");
+                .NotEmpty().WithMessage("Please enter a password.");
 
             RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage("Passwords do not match");
 
