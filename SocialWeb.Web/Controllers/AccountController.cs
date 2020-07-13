@@ -1,11 +1,12 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Application.Services.Abstract;
-using SocialWeb.Application.Services.Concrete;
 
 namespace SocialWeb.Web.Controllers
 {
@@ -23,6 +24,7 @@ namespace SocialWeb.Web.Controllers
         {
             return View();
         }
+
         #region Register
         [AllowAnonymous]
         public IActionResult Register()
@@ -39,7 +41,7 @@ namespace SocialWeb.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-               var result = await _userservice.Register(model);
+                var result = await _userservice.Register(model);
 
                 if (result.Succeeded)
                 {
@@ -69,7 +71,7 @@ namespace SocialWeb.Web.Controllers
             return View();
         }
 
-        [HttpPost,AllowAnonymous]
+        [HttpPost, AllowAnonymous]
         public async Task<IActionResult> Login(LoginDto model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -87,12 +89,23 @@ namespace SocialWeb.Web.Controllers
         }
         #endregion
 
-        
+        #region Logout
+        [HttpPost]
+        public async Task<IActionResult> LogOut()
+        {
+            await _userservice.LogOut();
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+        #endregion
+
+        #region ExternalLogin
+
         [AllowAnonymous]
         public IActionResult ExternalLogin(string provider, string returnUrl)
         {
-           var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
-            
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+
             AuthenticationProperties properties = _userservice.ExternalLogin(provider, redirectUrl);
 
             return new ChallengeResult(provider, properties);
@@ -121,7 +134,7 @@ namespace SocialWeb.Web.Controllers
                 return View("ExternalLoginConfirmation", new ExternalLoginDto { Email = email });
             }
         }
-        [HttpPost,AllowAnonymous]
+        [HttpPost, AllowAnonymous]
         public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginDto model, string returnUrl = "/")
         {
             if (!ModelState.IsValid)
@@ -131,7 +144,7 @@ namespace SocialWeb.Web.Controllers
             if (info == null)
                 return View();
 
-            var result = await _userservice.ExternalRegister(info,model);
+            var result = await _userservice.ExternalRegister(info, model);
 
             if (result.Succeeded)
             {
@@ -145,16 +158,44 @@ namespace SocialWeb.Web.Controllers
 
             return View(nameof(ExternalLoginConfirmation), model);
         }
-       
 
-        [HttpPost]
-        public async Task<IActionResult> LogOut()
+        #endregion
+
+        #region EditProfile
+        public async Task<IActionResult> EditProfile(int id)
         {
-            await _userservice.LogOut();
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (id == Convert.ToInt32(claim.Value))
+            {
+                var user = await _userservice.GetById(id);
 
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+                if (user == null)
+                    return NotFound();
+
+                return View(user);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(EditProfileDto model, IFormFile file)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (model.Id == Convert.ToInt32(claim.Value))
+            {
+                model.Image = file;
+                await _userservice.EditUser(model);
+            }
+            return View();
+        }
+        #endregion
+        
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))

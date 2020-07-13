@@ -1,3 +1,4 @@
+using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -7,10 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SocialWeb.Application.AutoMapper;
 using SocialWeb.Application.Models.DTOs;
+using SocialWeb.Application.Services.Abstract;
+using SocialWeb.Application.Services.Concrete;
 using SocialWeb.Application.Validation.FluentValidation;
 using SocialWeb.Domain.Entities.Concrete;
+using SocialWeb.Domain.UnitOfWork;
 using SocialWeb.Infrastructure.Context;
+using SocialWeb.Infrastructure.UnitOfWork;
 using SocialWeb.IoC;
 
 namespace SocialWeb.Web
@@ -77,6 +83,10 @@ namespace SocialWeb.Web
 
             app.UseEndpoints(endpoints =>
             {
+               endpoints.MapControllerRoute(name: "profile",
+               pattern: "profile/{userName}",
+               defaults: new { controller = "Profile", action = "Detail" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

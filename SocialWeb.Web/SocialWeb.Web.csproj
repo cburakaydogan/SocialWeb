@@ -17,4 +17,8 @@
     <ProjectReference Include="..\SocialWeb.IoC\SocialWeb.IoC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\users\" />
+  </ItemGroup>
+
 </Project>

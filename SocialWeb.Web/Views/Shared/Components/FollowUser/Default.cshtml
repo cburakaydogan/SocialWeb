@@ -1,0 +1,24 @@
+﻿@model FollowDto
+
+@{ if (Model.isExist)
+    {
+
+        <form asp-action="UnFollow" asp-controller="Follow" method="post">
+            <input hidden asp-for="FollowerId" />
+            <input hidden asp-for="FollowingId" />
+            <input type="submit" class="btn btn-primary" value="UnFollow" />
+
+        </form>
+    }
+    else
+    {
+
+        <form asp-action="Follow" asp-controller="Follow" method="post">
+
+            <input hidden asp-for="FollowerId" />
+            <input hidden asp-for="FollowingId" />
+            <input type="submit" class="btn btn-primary" value="Follow" />
+
+        </form>
+
+    }}

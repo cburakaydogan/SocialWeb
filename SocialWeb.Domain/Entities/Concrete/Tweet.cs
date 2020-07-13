@@ -21,7 +21,7 @@ namespace SocialWeb.Domain.Entities.Concrete
         public List<Like> Likes { get; set; }
         public List<Share> Shares { get; set; }
         public List<Mention> Mentions { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get { return DateTime.Now; } private set { } }
         public DateTime? ModifiedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public Status Status { get; set; }

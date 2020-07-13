@@ -5,7 +5,7 @@ using SocialWeb.Domain.Repositories;
 
 namespace SocialWeb.Domain.UnitOfWork
 {
-    public interface IUnitOfWork : IAsyncDisposable, IDisposable
+    public interface IUnitOfWork: IAsyncDisposable
     {
         ITweetRepository Tweet { get; }
         IMentionRepository Mention { get; }
@@ -14,6 +14,6 @@ namespace SocialWeb.Domain.UnitOfWork
         ILikeRepository Like { get; }
         IShareRepository Share { get; }
         Task Commit();
-        void ExecuteSqlRaw(string sql, params object[] parameters);
+        Task ExecuteSqlRaw(string sql, params object[] parameters);
     }
 }

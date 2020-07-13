@@ -12,7 +12,7 @@ namespace SocialWeb.Domain.Entities.Concrete
         public AppUser AppUser { get; set; }
         public int TweetId { get; set; }
         public Tweet Tweet { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get { return DateTime.Now; } private set { } }
         public DateTime? ModifiedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public Status Status { get; set; }

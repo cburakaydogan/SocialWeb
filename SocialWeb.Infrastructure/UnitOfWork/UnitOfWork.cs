@@ -35,34 +35,18 @@ namespace SocialWeb.Infrastructure.UnitOfWork
         private IShareRepository _shareRepository;
         public IShareRepository Share { get { return _shareRepository ?? (_shareRepository = new ShareRepository(_db)); } }
 
-        public void ExecuteSqlRaw(string sql, params object[] parameters)
+        public async Task ExecuteSqlRaw(string sql, params object[] parameters)
         {
-             _db.Database.ExecuteSqlRaw(sql, parameters);
+            await _db.Database.ExecuteSqlRawAsync(sql, parameters);
         }
+        private bool isDisposed = false;
 
         public async Task Commit()
         {
-            await _db.SaveChangesAsync();
-        }
-
-        private bool isDisposed = false;
-
-        public void Dispose()
-        {
-            if (!isDisposed)
-            {
-                isDisposed = true;
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
+            
+            
+                    await _db.SaveChangesAsync();
+            
         }
 
         public async ValueTask DisposeAsync()

@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+
+@await Component.InvokeAsync("ProfileSummary", new { UserName = @ViewBag.userName })
+
+@if (SignInManager.IsSignedIn(User) && User.Identity.Name != @ViewBag.userName)
+{
+    @await Component.InvokeAsync("FollowUser", new { UserName = @ViewBag.userName })
+}
+
+

@@ -32,27 +32,31 @@ namespace SocialWeb.Infrastructure.Repositories
 
         public async Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate)
         {
-            return await table.AsNoTracking().FirstOrDefaultAsync(predicate);
+            return await table.Where(predicate).FirstOrDefaultAsync();
         }
 
         public async Task<List<T>> Get(Expression<Func<T, bool>> predicate)
         {
-           return await table.AsNoTracking().Where(predicate).ToListAsync();
+           return await table.Where(predicate).ToListAsync();
         }
 
         public async Task<List<T>> GetAll()
         {
-            return await table.AsNoTracking().ToListAsync();
+            return await table.ToListAsync();
+        }
+        public async Task<bool> Any(Expression<Func<T, bool>> predicate)
+        {
+            return await table.AnyAsync(predicate);
         }
 
-        public async Task<T> GetById(Guid id)
+        public async Task<T> GetById(int id)
         {
             return await table.FindAsync(id);
         }
 
         public void Update(T entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
+            _context.Entry<T>(entity).State = EntityState.Modified;
         }
     }
 }

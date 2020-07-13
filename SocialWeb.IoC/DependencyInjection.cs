@@ -15,10 +15,9 @@ namespace SocialWeb.IoC
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Mapping));
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
             services.AddScoped<IAppUserService, AppUserService>();
+            services.AddScoped<IFollowService, FollowService>();
 
             return services;
         }
