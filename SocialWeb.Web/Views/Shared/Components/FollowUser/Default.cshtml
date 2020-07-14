@@ -1,24 +1,55 @@
 ﻿@model FollowDto
 
+ <input hidden asp-for="FollowerId"/>
+            <input hidden asp-for="FollowingId"/>
 @{ if (Model.isExist)
-    {
-
-        <form asp-action="UnFollow" asp-controller="Follow" method="post">
-            <input hidden asp-for="FollowerId" />
-            <input hidden asp-for="FollowingId" />
-            <input type="submit" class="btn btn-primary" value="UnFollow" />
-
-        </form>
+    {              
+                    <button id="UnFollow" onclick="UnFollow()" type="submit" class="btn btn-rounded btn-info">
+                    <i class="fa fa-minus"></i>
+                    Unfollow
+                    </button>
     }
     else
-    {
-
-        <form asp-action="Follow" asp-controller="Follow" method="post">
-
-            <input hidden asp-for="FollowerId" />
-            <input hidden asp-for="FollowingId" />
-            <input type="submit" class="btn btn-primary" value="Follow" />
-
-        </form>
-
+    {              
+                    <button id="Follow" type="submit"  onclick="Follow()"  class="btn btn-rounded btn-info">
+                    <i class="fa fa-plus"></i>
+                    Follow
+                    </button>
     }}
+<script>
+     
+         function Follow() {
+            var model={ 
+            FollowerId: parseInt($("#FollowerId").val()),
+            FollowingId: parseInt($("#FollowingId").val())};
+            
+            $.ajax({
+            data: JSON.stringify(model),
+            type: "POST",
+            url: "/Follow/Follow/",
+            contentType: "application/json",
+            dataType: "JSON",
+            success: function (result) {
+                if(result=="Success")
+                    $( "#Follow" ).replaceWith('<button onclick="UnFollow()" id="UnFollow" type="submit" class="btn btn-rounded btn-info"><i class="fa fa-minus"></i> Unfollow</button>');
+                                   
+                    }
+            });}
+            function UnFollow() {
+            var model={ 
+            FollowerId: parseInt($("#FollowerId").val()),
+            FollowingId: parseInt($("#FollowingId").val())}; 
+
+            $.ajax({
+            data: JSON.stringify(model),
+            type: "POST",
+            url: "/Follow/UnFollow/",
+            contentType: "application/json",
+            dataType: "JSON",
+            success: function (result) {
+                     if(result=="Success")
+                    $( "#UnFollow" ).replaceWith('<button onclick="Follow()" id="Follow" type="submit" class="btn btn-rounded btn-info"><i class="fa fa-plus"></i> Follow</button>');
+                }
+            });
+        }
+</script>

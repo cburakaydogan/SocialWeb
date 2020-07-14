@@ -1,0 +1,41 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+
+ <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+               
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+                  
+                </div>      
+                <div class="navbar-collapse collapse w-100 order-2 dual-collapse2">
+                    <ul class="navbar-nav ml-auto">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-controller="account" asp-action="Logout">@User.Identity.Name
+                               <button type="submit" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i> Log out
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <div class="btn-toolbox">
+                        <div class="btn-group">
+                            <a asp-controller="Account" asp-action="Register" class="btn btn-warning btn-sm">Register</a> 
+                        </div>
+                        
+                        <div class="btn-group">
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-sm">Login</a> 
+                        </div>
+                        </div>
+                    }
+                    </ul>
+                </div>
+            </div>
+        </nav>

@@ -121,8 +121,8 @@ namespace SocialWeb.Application.Services.Concrete
                 {
                     using var image = Image.Load(model.Image.OpenReadStream());
                     image.Mutate(x => x.Resize(256, 256));
-                    model.ImagePath = "wwwroot/images/users/" + isUser.UserName+ ".jpg";
-                    image.Save(model.ImagePath);
+                    image.Save("wwwroot/images/users/" + isUser.UserName + ".jpg");
+                    model.ImagePath =("/images/users/" + isUser.UserName + ".jpg");
                 }
 
                 var user = _mapper.Map<EditProfileDto,AppUser>(model,isUser);

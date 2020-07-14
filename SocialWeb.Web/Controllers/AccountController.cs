@@ -134,6 +134,7 @@ namespace SocialWeb.Web.Controllers
                 return View("ExternalLoginConfirmation", new ExternalLoginDto { Email = email });
             }
         }
+
         [HttpPost, AllowAnonymous]
         public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginDto model, string returnUrl = "/")
         {
@@ -162,13 +163,15 @@ namespace SocialWeb.Web.Controllers
         #endregion
 
         #region EditProfile
-        public async Task<IActionResult> EditProfile(int id)
+        public async Task<IActionResult> EditProfile(string userName)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (id == Convert.ToInt32(claim.Value))
+            if (userName == User.Identity.Name)
             {
-                var user = await _userservice.GetById(id);
+                var claimsIdentity = (ClaimsIdentity) User.Identity;
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                int userId = Convert.ToInt32(claim.Value);
+
+                var user = await _userservice.GetById(userId);
 
                 if (user == null)
                     return NotFound();
@@ -185,9 +188,9 @@ namespace SocialWeb.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfile(EditProfileDto model, IFormFile file)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claimsIdentity = (ClaimsIdentity) User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (model.Id == Convert.ToInt32(claim.Value))
+            if (model.UserName == User.Identity.Name)
             {
                 model.Image = file;
                 await _userservice.EditUser(model);
@@ -195,7 +198,7 @@ namespace SocialWeb.Web.Controllers
             return View();
         }
         #endregion
-        
+
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -205,4 +208,3 @@ namespace SocialWeb.Web.Controllers
         }
     }
 }
-

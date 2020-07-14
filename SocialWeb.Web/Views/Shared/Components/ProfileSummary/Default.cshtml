@@ -1,10 +1,29 @@
-﻿@model ProfileSummaryDto
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
 
-    <tr>
-        <td>Username: @Model.UserName</td>
-        <td>Name: @Model.Name</td>
-        <td>Followings: @Model.FollowerCount</td>
-        <td>Followers: @Model.FollowingCount</td>
-        <td>ImagePath: @Model.ImagePath</td>
-        <td>Tweet Count: @Model.TweetCount</td>
-    </tr>
+@model ProfileSummaryDto
+   
+    <div class="panel profile-cover">
+            <div class="profile-cover__img">
+                <img src="@Model.ImagePath" alt="" />
+                <h3 class="h3">@Model.Name</h3>
+                <h5 class="h5">@@@Model.UserName</h5>
+            </div>
+            <div class="profile-cover__action bg--img" data-overlay="0.3">
+               @if (SignInManager.IsSignedIn(User) && User.Identity.Name != @Model.UserName)
+{
+                @await Component.InvokeAsync("FollowUser", new { UserName = @Model.UserName })}
+ else if(SignInManager.IsSignedIn(User) && User.Identity.Name == @Model.UserName){
+     <a class="btn btn-rounded btn-info" asp-controller="Account" asp-action="EditProfile" asp-route-username="@User.Identity.Name">
+                    <i class="fa fa-comment"></i>
+                    <span>Settings</span>
+                </a> 
+        }</div>
+            <div class="profile-cover__info">
+                <ul class="nav">
+                    <li><strong>@Model.TweetCount</strong>Tweets</li>
+                    <li><strong>@Model.FollowingCount</strong>Followers</li>
+                    <li><strong>@Model.FollowerCount</strong>Following</li>
+                </ul>
+            </div>
+        </div>

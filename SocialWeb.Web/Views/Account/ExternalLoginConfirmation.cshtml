@@ -1,34 +1,34 @@
 ﻿@model ExternalLoginDto
-
-<h4>External provider registration</h4>
-<hr />
-
-<p class="text-info">
-    Enter an email to associate your <strong>@ViewData["Provider"]</strong> account.
-</p>
-
+@{
+    ViewData["Title"] = "Additional Infos";
+}
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]">
+<div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+    <div class="card card-signin my-5">
+        <div class="card-body">
+            <h5 class="card-title text-center">Additional Infos</h5>
+        <form asp-action="ExternalLoginConfirmation" class="form-signin" asp-route-returnurl="@ViewData["ReturnUrl"]">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-label-group">
+                <input asp-for="Email" class="form-control" placeholder="E-Mail"/>
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-label-group">
+                <input asp-for="Name" class="form-control" placeholder="Name"/>
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-label-group">
+                <input asp-for="UserName" class="form-control" placeholder="Username" />
                 <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary" />
+            <div class="form-label-group">
+                <input type="submit" value="Register" class="btn btn-lg btn-primary btn-block text-uppercase" />
             </div>
-        </form>
+         </form>
+    </div>
+    </div>
     </div>
 </div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

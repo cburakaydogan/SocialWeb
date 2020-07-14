@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,19 +24,27 @@ namespace SocialWeb.Web.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Follow(FollowDto model)
+        public async Task<IActionResult> Follow([FromBody]FollowDto model)
         {
-            await _followService.Follow(model);
-
-           return RedirectToAction("Index", "home");
+            var claimsIdentity = (ClaimsIdentity) User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (model.FollowerId == Convert.ToInt32(claim.Value)){
+                    await _followService.Follow(model);
+                    return Json("Success");
+            }
+            return Json("Failed");
         }
 
         [HttpPost]
-        public async Task<IActionResult> UnFollow(FollowDto model)
+        public async Task<IActionResult> UnFollow([FromBody]FollowDto model)
         {
-            await _followService.Unfollow(model);
-
-            return RedirectToAction("Index", "home");
+             var claimsIdentity = (ClaimsIdentity) User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (model.FollowerId == Convert.ToInt32(claim.Value)){
+                    await _followService.Unfollow(model);
+                    return Json("Success");
+            }
+            return Json("Failed");
         }
     }
 }
