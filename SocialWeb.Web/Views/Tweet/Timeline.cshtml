@@ -1,0 +1,58 @@
+﻿@model IEnumerable<SocialWeb.Application.Models.DTOs.TimelineDto>
+
+@{
+    ViewData["Title"] = "Tweet Feed";
+}
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Activity Feed</h3>
+    </div>
+    <div class="panel-content panel-activity">
+        <form action="#" class="panel-activity__status">
+            <textarea name="user_activity" placeholder="Share what you've been up to..." class="form-control"></textarea>
+            <div class="actions">
+                <div class="btn-group">
+                    <button type="button" class="btn-link" title="" data-toggle="tooltip" data-original-title="Post an Image">
+                        <i class="fa fa-image"></i>
+                    </button>
+                    <button type="button" class="btn-link" title="" data-toggle="tooltip" data-original-title="Post an Video">
+                        <i class="fa fa-video-camera"></i>
+                    </button>
+                    <button type="button" class="btn-link" title="" data-toggle="tooltip" data-original-title="Post an Idea">
+                        <i class="fa fa-lightbulb-o"></i>
+                    </button>
+                    <button type="button" class="btn-link" title="" data-toggle="tooltip" data-original-title="Post an Question">
+                        <i class="fa fa-question-circle-o"></i>
+                    </button>
+                </div>
+                <button type="submit" class="btn btn-sm btn-rounded btn-info">
+                    Post
+                </button>
+            </div>
+        </form>
+        <ul class="panel-activity__list">
+            @foreach (var item in Model)
+            {
+                <li>
+                    <i class="activity__list__icon fa fa-question-circle-o"></i>
+                    <div class="activity__list__header">
+                        <img src="@item.UserImage" alt="" />
+                        <a href="#">@item.Name</a> @@@item.UserName
+                    </div>
+                    <div class="activity__list__body entry-content">
+                        <p>
+                            @item.Text
+                        </p>
+                    </div>
+                    <div class="activity__list__footer">
+                        <a href="#"> <i class="fa fa-thumbs-up"></i>@item.LikeCount</a>
+                        <a href="#"> <i class="fa fa-comments"></i>@item.MentionCount</a>
+                        <a href="#"> <i class="fa fa-share"></i>@item.ShareCount</a>
+                        <span> <i class="fa fa-clock"></i>@item.TweetDate</span>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
