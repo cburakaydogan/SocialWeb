@@ -19,5 +19,7 @@ namespace SocialWeb.Application.Models.DTOs
         public string UserImage { get; set; }
         public int TimelineOwnerId { get; set; }
 
+        public bool isLiked{get; set;}
+
     }
 }

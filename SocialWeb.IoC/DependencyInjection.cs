@@ -18,6 +18,7 @@ namespace SocialWeb.IoC
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAppUserService, AppUserService>();
             services.AddScoped<IFollowService, FollowService>();
+            services.AddScoped<ILikeService, LikeService>();
             services.AddScoped<ITweetService, TweetService>();
 
             return services;

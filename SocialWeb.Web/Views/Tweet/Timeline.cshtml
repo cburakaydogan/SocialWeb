@@ -33,7 +33,7 @@
         </form>
         <ul class="panel-activity__list">
             @foreach (var item in Model)
-            {
+            {<input hidden asp-for="@item.TimelineOwnerId" />
                 <li>
                     <i class="activity__list__icon fa fa-question-circle-o"></i>
                     <div class="activity__list__header">
@@ -46,7 +46,14 @@
                         </p>
                     </div>
                     <div class="activity__list__footer">
-                        <a href="#"> <i class="fa fa-thumbs-up"></i>@item.LikeCount</a>
+                        @if (item.isLiked)
+                        {
+                            <a onclick="Unlike(@item.Id)" id="@item.Id"> <i class="fa fa-heart"></i><span id="likecount_@item.Id">@item.LikeCount</span></a>
+                        }
+                        else{
+                            <a onclick="Like(@item.Id)" id="@item.Id"> <i class="fa fa-heart-o"></i><span id="likecount_@item.Id">@item.LikeCount</span></a>
+                        }
+                        
                         <a href="#"> <i class="fa fa-comments"></i>@item.MentionCount</a>
                         <a href="#"> <i class="fa fa-share"></i>@item.ShareCount</a>
                         <span> <i class="fa fa-clock"></i>@item.TweetDate</span>
@@ -56,3 +63,55 @@
         </ul>
     </div>
 </div>
+
+<script>
+
+         function Like(id) {
+            let $likecount = $("#likecount_"+id);
+            let likecount = Number($likecount.val() + $likecount.next().text()) || 0;
+            
+            var model={
+                TweetId: id,
+                AppUserId: parseInt($("#item_TimelineOwnerId").val())};
+            console.log(likecount);
+            $.ajax({
+            data: JSON.stringify(model),
+            type: "POST",
+            url: "/Like/Like/",
+            contentType: "application/json",
+            dataType: "JSON",
+            success: function (result) {
+                if(result=="Success"){
+                    likecount= likecount+1;
+                   let html = '<a onclick="Unlike('+id+')"id="'+id+'"><i class="fa fa-heart"></i><span id="likecount'+id+'">'+likecount+'</span></a>';
+
+                    $( "#"+id ).replaceWith(html);
+                }
+                    }
+            });}
+           function Unlike(id) {
+            let $likecount = $("#likecount_"+id);
+            let likecount = Number($likecount.val() + $likecount.next().text()) || 0;
+            var model={
+                TweetId: id,
+                AppUserId: parseInt($("#item_TimelineOwnerId").val())};
+            $.ajax({
+            data: JSON.stringify(model),
+            type: "POST",
+            url: "/Like/Unlike/",
+            contentType: "application/json",
+            dataType: "JSON",
+            success: function (result) {
+                if(result=="Success"){
+                     
+                     if(likecount!=0)
+                    likecount= likecount-1;
+                    
+                   let html = '<a onclick="Like('+id+')"id="'+id+'"><i class="fa fa-heart-o"></i><span id="likecount'+id+'">'+likecount+'</span></a>';
+
+                    $( "#"+id ).replaceWith(html);
+                    }
+
+                    }
+            });}
+</script>

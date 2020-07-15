@@ -29,7 +29,7 @@ namespace SocialWeb.Application.Services.Concrete
 
         public async Task<List<TimelineDto>> getTimeline(int userId)
         {
-            var tweets = await _context.Tweets.Join(_context.AppUsers,
+            var tweets = await _context.Tweets.Include(x=> x.Likes).Join(_context.AppUsers,
                 tweet => tweet.AppUserId,
                 user => user.Id,
                 (tweet, user) => new { tweet, user }).Join(_context.Follows,
@@ -48,7 +48,8 @@ namespace SocialWeb.Application.Services.Concrete
                     UserName = x.y.user.Name,
                     UserImage = x.y.user.ImagePath,
                     Name = x.y.user.Name,
-                    TimelineOwnerId = x.follow.FollowerId
+                    TimelineOwnerId = x.follow.FollowerId,
+                    isLiked = x.y.tweet.Likes.Any(z=> z.AppUserId == userId && z.TweetId == x.y.tweet.Id)
 
                 }).Where(x => x.TimelineOwnerId == userId).OrderByDescending(x => x.TweetDate).ToListAsync();
 
