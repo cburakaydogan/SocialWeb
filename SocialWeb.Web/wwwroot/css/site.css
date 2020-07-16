@@ -6,6 +6,13 @@ a.navbar-brand {
     text-align: center;
     word-break: break-all;
   }
+
+  .navbar{
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+  }
   
   /* Provide sufficient contrast against white background */
   a {
@@ -181,7 +188,10 @@ a.navbar-brand {
   /*---------------------------------------------------------------------------*/
 
   /* Profile_page */
-
+  body{
+    background:#dcdcdc;
+    margin-top:20px;
+   }
  .profile-cover {
      position: relative;
      z-index: 0;

@@ -22,15 +22,21 @@ namespace SocialWeb.Web.Controllers
             return View();
         }
 
-        public async Task<ActionResult<List<TimelineDto>>> Timeline()
+        public async Task<IActionResult> AddTweet(TweetDto model)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claimsIdentity = (ClaimsIdentity) User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             int userId = Convert.ToInt32(claim.Value);
+            if (model.AppUserId == userId)
+            {
+                await _tweetService.AddTweet(model);
+                return Json("Success");
+            }
+            else
+            {
+                return Json("Failed");
+            }
 
-            var tweets = await _tweetService.getTimeline(userId);
-
-            return View(tweets);
         }
     }
 }

@@ -9,5 +9,6 @@ namespace SocialWeb.Application.Services.Abstract
     public interface ITweetService
     {
         Task<List<TimelineDto>> getTimeline(int userId);
+        Task AddTweet(TweetDto model);
     }
 }

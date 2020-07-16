@@ -18,6 +18,8 @@ namespace SocialWeb.Application.AutoMapper
             CreateMap<Follow, FollowDto>().ReverseMap();
 
             CreateMap<Like, LikeDto>().ReverseMap();
+
+            CreateMap<Tweet, TweetDto>().ReverseMap();
         }
     }
 }

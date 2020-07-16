@@ -2,7 +2,42 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+@await Component.InvokeAsync("Timeline")
+
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        
+             $('#btnSend').click(function(e) {
+            var formData = new FormData();
+            
+            formData.append("AppUserId", JSON.stringify(parseInt($("#AppUserId").val())));
+            formData.append("Text", $("#Text").val());
+            formData.append("Image", document.getElementById("Image").files[0]);
+            
+            $.ajax({
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            url: "/Tweet/AddTweet/",
+            success: function (result) {
+                if(result=="Success"){
+                $("#tweetValidation").addClass("alert alert-success").text("Sent Successfully!");
+                $("#tweetValidation").alert();
+                $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function(){
+                });
+                }
+                else{
+                $("#tweetValidation").addClass("alert alert-danger").text("Error Occured!");
+                $("#tweetValidation").alert();
+                $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function(){
+                });
+                }
+                    }
+            });
+    });
+     });   
+</script>}

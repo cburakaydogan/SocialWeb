@@ -1,17 +1,22 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> SignInManager
 
- <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+
             <div class="container">
-               
+                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3" >
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-                  
+
+                </div>  
+                <div class="mx-auto order-0">
+                  <form class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                </form>
                 </div>      
-                <div class="navbar-collapse collapse w-100 order-2 dual-collapse2">
+                <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                     <ul class="navbar-nav ml-auto">
                     @if (SignInManager.IsSignedIn(User))
                     {
@@ -36,6 +41,6 @@
                         </div>
                     }
                     </ul>
-                </div>
+                </div>      </nav>
             </div>
-        </nav>
+  

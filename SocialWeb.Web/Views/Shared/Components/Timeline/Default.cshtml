@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SocialWeb.Application.Models.DTOs.TimelineDto>
+@model IEnumerable<SocialWeb.Application.Models.DTOs.TimelineDto>
 
 @{
     ViewData["Title"] = "Tweet Feed";
@@ -9,28 +9,8 @@
         <h3 class="panel-title">Activity Feed</h3>
     </div>
     <div class="panel-content panel-activity">
-        <form action="#" class="panel-activity__status">
-            <textarea name="user_activity" placeholder="Share what you've been up to..." class="form-control"></textarea>
-            <div class="actions">
-                <div class="btn-group">
-                    <button type="button" class="btn-link" title="" data-toggle="tooltip" data-original-title="Post an Image">
-                        <i class="fa fa-image"></i>
-                    </button>
-                    <button type="button" class="btn-link" title="" data-toggle="tooltip" data-original-title="Post an Video">
-                        <i class="fa fa-video-camera"></i>
-                    </button>
-                    <button type="button" class="btn-link" title="" data-toggle="tooltip" data-original-title="Post an Idea">
-                        <i class="fa fa-lightbulb-o"></i>
-                    </button>
-                    <button type="button" class="btn-link" title="" data-toggle="tooltip" data-original-title="Post an Question">
-                        <i class="fa fa-question-circle-o"></i>
-                    </button>
-                </div>
-                <button type="submit" class="btn btn-sm btn-rounded btn-info">
-                    Post
-                </button>
-            </div>
-        </form>
+       @await Component.InvokeAsync("AddTweet")
+
         <ul class="panel-activity__list">
             @foreach (var item in Model)
             {<input hidden asp-for="@item.TimelineOwnerId" />

@@ -1,0 +1,25 @@
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using SocialWeb.Application.Models.DTOs;
+
+namespace SocialWeb.Web.ViewComponents
+{
+    public class AddTweet:ViewComponent
+    {
+        public AddTweet()
+        {
+            
+        }
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            int userId = Convert.ToInt32(claim.Value);
+            var tweet = new TweetDto();
+            tweet.AppUserId=userId;
+            return View(tweet);
+        }
+    }
+}
