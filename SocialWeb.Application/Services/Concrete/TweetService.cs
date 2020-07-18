@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using SixLabors.ImageSharp;
@@ -21,45 +21,32 @@ namespace SocialWeb.Application.Services.Concrete
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _context;
+        private readonly IFollowService _followService;
 
-        public TweetService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationDbContext context)
+        public TweetService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationDbContext context, IFollowService followService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _context = context;
+            _followService = followService;
         }
 
-        public async Task<List<TimelineDto>> getTimeline(int userId)
+        public async Task<List<TimelineVm>> getTimeline(int userId)
         {
-            var tweets = await _context.Tweets.Include(x => x.Likes).Join(_context.AppUsers,
-                tweet => tweet.AppUserId,
-                user => user.Id,
-                (tweet, user) => new { tweet, user }).Join(_context.Follows,
-                y => y.user.Id,
-                follow => follow.FollowingId,
-                (y, follow) => new { y, follow }).Select(x => new TimelineDto
-            {
-                    Id = x.y.tweet.Id,
-                    Text = x.y.tweet.Text,
-                    ImagePath = x.y.tweet.ImagePath,
-                    AppUserId = x.y.tweet.AppUserId,
-                    LikeCount = x.y.tweet.Likes.Count,
-                    MentionCount = x.y.tweet.Mentions.Count,
-                    ShareCount = x.y.tweet.Shares.Count,
-                    TweetDate = x.y.tweet.CreateDate,
-                    UserName = x.y.user.Name,
-                    UserImage = x.y.user.ImagePath,
-                    Name = x.y.user.Name,
-                    TimelineOwnerId = x.follow.FollowerId,
-                    isLiked = x.y.tweet.Likes.Any(z => z.AppUserId == userId && z.TweetId == x.y.tweet.Id)
+            List<int> followings = await _followService.FollowingList(userId);
 
-            }).Where(x => x.TimelineOwnerId == userId).OrderByDescending(x => x.TweetDate).ToListAsync();
+            var tweets = await _context.Tweets
+                .Include(x => x.AppUser).ThenInclude(x => x.Followers)
+                .Include(x => x.Likes)
+                .ProjectTo<TimelineVm>(_mapper.ConfigurationProvider, new { userId })
+                .Where(x => followings.Contains(x.AppUserId))
+                .OrderByDescending(x => x.CreateDate).ToListAsync();
 
             return tweets;
 
         }
 
-        public async Task AddTweet(TweetDto model)
+        public async Task AddTweet(SendTweetDto model)
         {
 
             if (model.Image != null)
@@ -70,10 +57,22 @@ namespace SocialWeb.Application.Services.Concrete
                 model.ImagePath = ("/images/tweets/" + Guid.NewGuid() + ".jpg");
             }
 
-            var tweet = _mapper.Map<TweetDto, Tweet>(model);
+            var tweet = _mapper.Map<SendTweetDto, Tweet>(model);
 
             await _unitOfWork.Tweet.Add(tweet);
             await _unitOfWork.Commit();
         }
+
+        public async Task<TweetDetailVm> TweetDetail(int id, int userId)
+        {
+
+            var tweet = await _context.Tweets.Where(x => x.Id == id)
+                .Include(x => x.Likes)
+                .Include(x => x.AppUser)
+                .Include(x => x.Mentions).ProjectTo<TweetDetailVm>(_mapper.ConfigurationProvider, new { userId }).FirstOrDefaultAsync();
+                
+            return tweet;
+        }
+
     }
 }

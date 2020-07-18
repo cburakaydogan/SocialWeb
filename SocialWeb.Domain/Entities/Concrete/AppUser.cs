@@ -28,8 +28,9 @@ namespace SocialWeb.Domain.Entities.Concrete
         public List<Share> Shares { get; set; }
         public List<Like> Likes { get; set; }
         public List<Mention> Mentions { get; set; }
+        [InverseProperty("Follower")]
         public List<Follow> Followers { get; set; }
-
+        [InverseProperty("Following")]
         public List<Follow> Followings { get; set; }
     }
 }

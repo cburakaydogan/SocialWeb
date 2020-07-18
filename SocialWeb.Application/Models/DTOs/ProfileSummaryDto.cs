@@ -9,8 +9,8 @@ namespace SocialWeb.Application.Models.DTOs
         public string UserName { get; set; }
         public string Name { get; set; }
         public string ImagePath { get; set; }
-        public int FollowerCount { get; set; }
-        public int FollowingCount { get; set; }
-        public int TweetCount { get; set; }
+        public int FollowersCount { get; set; }
+        public int FollowingsCount { get; set; }
+        public int TweetsCount { get; set; }
     }
 }

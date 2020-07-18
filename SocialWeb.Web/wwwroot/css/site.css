@@ -714,6 +714,33 @@ a.navbar-brand {
      font-weight: 600;
  }
  
+ /* ------------ */
+ .comment_header {
+    position: relative;
+    min-height: 20px;
+    padding-top: 4px;
+    padding-left: 60px;
+    color: #999;
+    z-index: 0;
+}
+ .comment_header img {
+    max-width: 25px;
+    border-radius: 50%;
+    margin-right: 2px;
+}
+
+
+.comment_header a {
+    color: #222;
+    font-weight: 600;
+}
+
+ 
+.comment_body {
+    padding-top: 4px;
+    padding-left: 65px;
+}
+
  .activity__list__footer {
      display: -ms-flexbox;
      display: -webkit-box;
@@ -748,6 +775,7 @@ a.navbar-brand {
  .panel-activity__list > li + li {
      margin-top: 51px;
  }
+
  
  /* .weather--panel {
      padding: 24px 20px 36px;
@@ -949,18 +977,7 @@ a.navbar-brand {
      background-color: #009378;
  }
  
- .comments-panel > ul > li:after,
- .comments-panel > ul > li:before,
- .feeds-panel li:after,
- .feeds-panel li:before {
-     content: " ";
-     display: table;
- }
- 
- .comments-panel > ul > li:after,
- .feeds-panel li:after {
-     clear: both;
- }
+
  
  .feeds-panel .time {
      float: right;

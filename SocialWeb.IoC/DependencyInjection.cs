@@ -20,6 +20,7 @@ namespace SocialWeb.IoC
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<ILikeService, LikeService>();
             services.AddScoped<ITweetService, TweetService>();
+            services.AddScoped<IMentionService, MentionService>();
 
             return services;
         }

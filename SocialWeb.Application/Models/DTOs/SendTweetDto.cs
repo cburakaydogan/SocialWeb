@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace SocialWeb.Application.Models.DTOs
 {
-    public class TweetDto
+    public class SendTweetDto
     {
         public int Id { get; set; }
         public string Text { get; set; }

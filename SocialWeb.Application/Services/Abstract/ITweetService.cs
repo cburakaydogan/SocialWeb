@@ -8,7 +8,8 @@ namespace SocialWeb.Application.Services.Abstract
 {
     public interface ITweetService
     {
-        Task<List<TimelineDto>> getTimeline(int userId);
-        Task AddTweet(TweetDto model);
+        Task<List<TimelineVm>> getTimeline(int userId);
+        Task AddTweet(SendTweetDto model);
+        Task<TweetDetailVm> TweetDetail(int id, int userId);
     }
 }

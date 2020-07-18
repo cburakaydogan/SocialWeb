@@ -22,7 +22,7 @@ namespace SocialWeb.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> AddTweet(TweetDto model)
+        public async Task<IActionResult> AddTweet(SendTweetDto model)
         {
             var claimsIdentity = (ClaimsIdentity) User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -38,5 +38,17 @@ namespace SocialWeb.Web.Controllers
             }
 
         }
+
+        public async Task<IActionResult> TweetDetail(int id){
+
+            var claimsIdentity = (ClaimsIdentity) User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            int userId = Convert.ToInt32(claim.Value);
+
+            var tweet = await _tweetService.TweetDetail(id, userId);
+
+            return View(tweet);
+        }
+    
     }
 }

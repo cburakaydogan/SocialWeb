@@ -22,13 +22,13 @@ namespace SocialWeb.Web.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(string userName)
         {
-            var user = await _userservice.GetFromName(userName);
+            int userId = await _userservice.UserIdFromName(userName);
 
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             int followerId = Convert.ToInt32(claim.Value);
 
-            var followDto = new FollowDto { FollowerId = followerId, FollowingId = user.Id };
+            var followDto = new FollowDto { FollowerId = followerId, FollowingId = userId };
 
            followDto.isExist = await _followService.isFollowing(followDto);
 

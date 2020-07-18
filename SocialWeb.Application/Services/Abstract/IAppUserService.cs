@@ -13,7 +13,7 @@ namespace SocialWeb.Application.Services.Abstract
         Task<IdentityResult> Register(RegisterDto model);
         Task<SignInResult> Login(LoginDto model);
         Task LogOut();
-        Task<UserDto> GetFromName(string userName);
+        Task<int> UserIdFromName(string userName);
         AuthenticationProperties ExternalLogin(string provider, string redirectUrl);
         Task<ExternalLoginInfo> GetExternalLoginInfo();
         Task<SignInResult> ExternalLoginSignIn(string provider, string key);

@@ -12,12 +12,12 @@ namespace SocialWeb.Web.ViewComponents
         {
             
         }
-        public async Task<IViewComponentResult> InvokeAsync()
+        public IViewComponentResult Invoke()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             int userId = Convert.ToInt32(claim.Value);
-            var tweet = new TweetDto();
+            var tweet = new SendTweetDto();
             tweet.AppUserId=userId;
             return View(tweet);
         }

@@ -87,6 +87,10 @@ namespace SocialWeb.Web
                pattern: "profile/{userName}",
                defaults: new { controller = "Profile", action = "Detail" });
 
+                endpoints.MapControllerRoute(name: "tweet",
+               pattern: "tweet/{id}",
+               defaults: new { controller = "Tweet", action = "TweetDetail" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -29,12 +29,10 @@ namespace SocialWeb.Web.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (model.AppUserId == Convert.ToInt32(claim.Value))
-            {
-                await _likeService.Like(model);
-                return Json("Success");
-            }
-            return Json("Failed");
+            model.AppUserId = Convert.ToInt32(claim.Value);
+
+            await _likeService.Like(model);
+            return Json("Success");
         }
 
         [HttpPost]
@@ -42,12 +40,10 @@ namespace SocialWeb.Web.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (model.AppUserId == Convert.ToInt32(claim.Value))
-            {
-                await _likeService.Unlike(model);
-                return Json("Success");
-            }
-            return Json("Failed");
+            model.AppUserId = Convert.ToInt32(claim.Value);
+
+            await _likeService.Unlike(model);
+            return Json("Success");
         }
     }
 }

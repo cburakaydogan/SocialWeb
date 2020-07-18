@@ -134,16 +134,7 @@ namespace SocialWeb.Application.Services.Concrete
 
         public async Task<ProfileSummaryDto> GetByName(string userName)
         {
-            var user = await _context.AppUsers.Where(x => x.UserName == userName).Select(x => new ProfileSummaryDto()
-            {
-                Name = x.Name,
-                FollowerCount = x.Followers.Count,
-                FollowingCount = x.Followings.Count,
-                ImagePath = x.ImagePath,
-                UserName = x.UserName,
-                TweetCount = x.Tweets.Count
-            }).FirstAsync();
-            //var user = await _context.AppUsers.Where(x => x.UserName == userName).ProjectTo<ProfileSummaryDto>(_mapper.ConfigurationProvider).FirstAsync();
+            var user = await _context.AppUsers.Where(x => x.UserName == userName).ProjectTo<ProfileSummaryDto>(_mapper.ConfigurationProvider).FirstAsync();
 
             return user;
         }
@@ -152,13 +143,9 @@ namespace SocialWeb.Application.Services.Concrete
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<UserDto> GetFromName(string userName)
+        public async Task<int> UserIdFromName(string userName)
         {
-            var user = await _context.AppUsers.Where(x => x.UserName == userName).Select(x => new UserDto()
-            {
-                userName = x.UserName,
-                Id = x.Id
-            }).FirstAsync();
+            var user = await _context.AppUsers.Where(x => x.UserName == userName).Select(x=> x.Id).FirstAsync();
             return user;
         }
     }
