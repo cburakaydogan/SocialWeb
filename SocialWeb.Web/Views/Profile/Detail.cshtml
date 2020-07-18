@@ -3,3 +3,4 @@
 }
 
 @await Component.InvokeAsync("ProfileSummary", new { UserName = @ViewBag.userName })
+@await Component.InvokeAsync("UsersTweets", new { UserName = @ViewBag.userName })

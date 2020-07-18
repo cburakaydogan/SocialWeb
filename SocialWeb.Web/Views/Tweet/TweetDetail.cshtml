@@ -33,6 +33,7 @@
                         <a> <i class="fa fa-share"></i>@Model.SharesCount</a>
                         <span> <i class="fa fa-clock"></i>@Model.CreateDate</span>
                     </div> </li>
+                    
                     <div style="margin-top: 20px">
               @foreach (var item in Model.Mentions)
                 {
@@ -47,8 +48,8 @@
                             @item.Text
                         </p>
                     </div></li>
+                   
                 }</div>
-             
         </ul>
 
     </div>

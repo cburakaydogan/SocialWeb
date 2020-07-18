@@ -1,4 +1,4 @@
-@model IEnumerable<SocialWeb.Application.Models.DTOs.TimelineVm>
+@model IEnumerable<SocialWeb.Application.Models.DTOs.UsersTweetsVm>
 
 @{
     ViewData["Title"] = "Tweet Feed";
@@ -6,12 +6,10 @@
 
 <div class="panel">
     <div class="panel-heading">
-        <h3 class="panel-title">Activity Feed</h3>
+        <h3 class="panel-title">Tweets</h3>
     </div>
-    <div class="panel-content panel-activity">
-       @await Component.InvokeAsync("AddTweet")
-
-        <ul class="panel-activity__list">
+    <div class="panel-content panel-activity" style="padding-top: 15px">
+        <ul class="panel-activity__list" style="margin-top: 0px">
             
             @foreach (var item in Model)
             {

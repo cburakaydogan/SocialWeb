@@ -6,11 +6,11 @@ using SocialWeb.Application.Services.Abstract;
 
 namespace SocialWeb.Web.ViewComponents
 {
-    public class Timeline: ViewComponent
+    public class UsersTweets: ViewComponent
     {
         private readonly ITweetService _tweetService;
 
-        public Timeline(ITweetService service)
+        public UsersTweets(ITweetService service)
         {
             _tweetService = service;
         }
@@ -20,7 +20,7 @@ namespace SocialWeb.Web.ViewComponents
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             int userId = Convert.ToInt32(claim.Value);
 
-            var tweets = await _tweetService.GetTimeline(userId);
+            var tweets = await _tweetService.UsersTweets(userId);
 
             return View(tweets);
         }

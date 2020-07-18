@@ -31,7 +31,19 @@ namespace SocialWeb.Application.Services.Concrete
             _followService = followService;
         }
 
-        public async Task<List<TimelineVm>> getTimeline(int userId)
+        public async Task<List<UsersTweetsVm>> UsersTweets(int userId)
+        {
+            var tweets = await _context.Tweets
+                .Include(x => x.AppUser)
+                .Include(x => x.Likes)
+                .ProjectTo<UsersTweetsVm>(_mapper.ConfigurationProvider, new { userId })
+                .OrderByDescending(x => x.CreateDate).ToListAsync();
+
+            return tweets;
+
+        }
+
+        public async Task<List<TimelineVm>> GetTimeline(int userId)
         {
             List<int> followings = await _followService.FollowingList(userId);
 
