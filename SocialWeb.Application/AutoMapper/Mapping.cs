@@ -52,6 +52,9 @@ namespace SocialWeb.Application.AutoMapper
                 .ForMember(d => d.UserImage, opt => opt.MapFrom(s => s.AppUser.ImagePath))
                 .ReverseMap();
 
+              CreateMap<Mention, AddMentionDto>().ReverseMap();
+              
+
         }
     }
 }

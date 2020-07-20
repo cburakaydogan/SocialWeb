@@ -51,11 +51,49 @@
                    
                 }</div>
         </ul>
+ <form  class="panel-activity__status" id="formMentionTweet" style="padding-top: 20px">
+     <div id="tweetValidation" role="alert"></div>
+    <input hidden asp-for="Id" />
+     <textarea name="Text" id="Text" type="text" placeholder="Add mention..." class="form-control"></textarea>
+            <div class="actions">
+                <input type="button" id="btnSend" class="btn btn-sm btn-rounded btn-info" value="Post">
+            </div>
+</form>
 
     </div>
 </div>
-
+@section Scripts {
 <script>
+    $(document).ready(function () {
+        
+             $('#btnSend').click(function(e) {
+            var model ={ Text : $("#Text").val(),
+                         TweetId: parseInt($("#Id").val())};
+
+            
+             console.log(model);
+            $.ajax({
+            data: model,
+            type: "POST",
+            dataType: "JSON",
+            url: "/Mention/AddMention/",
+            success: function (result) {
+                if(result=="Success"){
+                $("#tweetValidation").addClass("alert alert-success").text("Sent Successfully!");
+                $("#tweetValidation").alert();
+                $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function(){
+                });
+                }
+                else{
+                $("#tweetValidation").addClass("alert alert-danger").text("Error Occured!");
+                $("#tweetValidation").alert();
+                $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function(){
+                });
+                }
+                    }
+            });
+    });
+     });   
 
          function Like(id) {
             let $likecount = $("#likecount_"+id);
@@ -105,5 +143,6 @@
 
                     }
             });}
-</script>
+            </script>
+            }
                 
