@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Application.Services.Abstract;
 
@@ -39,7 +40,8 @@ namespace SocialWeb.Web.Controllers
 
         }
 
-        public async Task<IActionResult> TweetDetail(int id){
+        public async Task<IActionResult> TweetDetail(int id)
+        {
 
             var claimsIdentity = (ClaimsIdentity) User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -49,6 +51,29 @@ namespace SocialWeb.Web.Controllers
 
             return View(tweet);
         }
-    
+
+        [HttpPost]
+        public async Task<IActionResult> GetTweets(int pageIndex, int pageSize, string userName = null)
+        {
+            
+            if (userName == null){
+
+                var claimsIdentity = (ClaimsIdentity) User.Identity;
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                int userId = Convert.ToInt32(claim.Value);
+
+                var tweets = await _tweetService.GetTimeline(userId, pageIndex);
+
+                return Json(tweets, new JsonSerializerSettings());
+            }
+
+            else{
+                var tweets = await _tweetService.UsersTweets(userName, pageIndex);
+
+                return Json(tweets, new JsonSerializerSettings());
+            }
+            
+        }
+
     }
 }

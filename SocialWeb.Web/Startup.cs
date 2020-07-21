@@ -58,7 +58,7 @@ namespace SocialWeb.Web
             });
 
             services.RegisterServices();
-            services.AddControllersWithViews()
+            services.AddControllersWithViews().AddNewtonsoftJson()
                 .AddFluentValidation();
             services.AddTransient<IValidator<RegisterDto>, RegisterValidation>();
             services.AddTransient<IValidator<ExternalLoginDto>, ExternalLoginValidation>();

@@ -32,7 +32,10 @@ namespace SocialWeb.Web.Controllers
                     await _followService.Follow(model);
                     return Json("Success");
             }
-            return Json("Failed");
+            else{
+                return Json("Failed");
+            }
+            
         }
 
         [HttpPost]
@@ -44,7 +47,9 @@ namespace SocialWeb.Web.Controllers
                     await _followService.Unfollow(model);
                     return Json("Success");
             }
-            return Json("Failed");
+              else{
+                return Json("Failed");
+            }
         }
     }
 }

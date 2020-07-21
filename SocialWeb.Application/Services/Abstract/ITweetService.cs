@@ -8,9 +8,9 @@ namespace SocialWeb.Application.Services.Abstract
 {
     public interface ITweetService
     {
-        Task<List<TimelineVm>> GetTimeline(int userId);
+        Task<List<TimelineVm>> GetTimeline(int userId,int pageIndex);
         Task AddTweet(SendTweetDto model);
         Task<TweetDetailVm> TweetDetail(int id, int userId);
-        Task<List<UsersTweetsVm>> UsersTweets(int userId);
+        Task<List<UsersTweetsVm>> UsersTweets(string userName ,int pageIndex);
     }
 }

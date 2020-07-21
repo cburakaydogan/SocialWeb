@@ -18,8 +18,7 @@ namespace SocialWeb.Application.Models.DTOs
         public string UserName { get; set; }
         public string Name { get; set; }
         public string UserImage { get; set; }
-        public int TimelineOwnerId { get; set; }
         public bool isLiked{get; set;}
-        public IEnumerable<MentionDto> Mentions { get; set; }
+        public List<MentionDto> Mentions { get; set; }
     }
 }

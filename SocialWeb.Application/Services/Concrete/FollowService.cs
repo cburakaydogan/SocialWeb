@@ -18,13 +18,11 @@ namespace SocialWeb.Application.Services.Concrete
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ApplicationDbContext _context;
 
-        public FollowService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationDbContext context)
+        public FollowService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _context = context;
         }
         public async Task Follow(FollowDto model)
         {
@@ -39,9 +37,11 @@ namespace SocialWeb.Application.Services.Concrete
 
         public async Task<List<int>> FollowingList(int id)
         {
-            var followingList = await _context.Follows.Where(x => x.FollowerId == id).Select(x=> x.FollowingId).ToListAsync();
-            return followingList;
+            var followingList = await _unitOfWork.Follow.GetFilteredList(
+                 selector: y => y.FollowingId,
+                 predicate: x => x.FollowerId == id);
 
+            return followingList;
         }
         public async Task<bool> isFollowing(FollowDto model)
         {
@@ -52,11 +52,10 @@ namespace SocialWeb.Application.Services.Concrete
 
         public async Task Unfollow(FollowDto model)
         {
-
             var isExistFollow = await _unitOfWork.Follow.FirstOrDefault(x => x.FollowerId == model.FollowerId && x.FollowingId == model.FollowingId);
+
             _unitOfWork.Follow.Delete(isExistFollow);
             await _unitOfWork.Commit();
-
         }
     }
 }

@@ -56,93 +56,9 @@
     <input hidden asp-for="Id" />
      <textarea name="Text" id="Text" type="text" placeholder="Add mention..." class="form-control"></textarea>
             <div class="actions">
-                <input type="button" id="btnSend" class="btn btn-sm btn-rounded btn-info" value="Post">
+                <input type="button" id="btnSendMention" class="btn btn-sm btn-rounded btn-info" value="Post">
             </div>
 </form>
 
     </div>
 </div>
-@section Scripts {
-<script>
-    $(document).ready(function () {
-        
-             $('#btnSend').click(function(e) {
-            var model ={ Text : $("#Text").val(),
-                         TweetId: parseInt($("#Id").val())};
-
-            
-             console.log(model);
-            $.ajax({
-            data: model,
-            type: "POST",
-            dataType: "JSON",
-            url: "/Mention/AddMention/",
-            success: function (result) {
-                if(result=="Success"){
-                $("#tweetValidation").addClass("alert alert-success").text("Sent Successfully!");
-                $("#tweetValidation").alert();
-                $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function(){
-                });
-                }
-                else{
-                $("#tweetValidation").addClass("alert alert-danger").text("Error Occured!");
-                $("#tweetValidation").alert();
-                $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function(){
-                });
-                }
-                    }
-            });
-    });
-     });   
-
-         function Like(id) {
-            let $likecount = $("#likecount_"+id);
-            let likecount = Number($likecount.val() + $likecount.next().text()) || 0;
-            
-            var model={
-                TweetId: id,
-                AppUserId: 0};
-            console.log(likecount);
-            $.ajax({
-            data: JSON.stringify(model),
-            type: "POST",
-            url: "/Like/Like/",
-            contentType: "application/json",
-            dataType: "JSON",
-            success: function (result) {
-                if(result=="Success"){
-                    likecount= likecount+1;
-                   let html = '<a onclick="Unlike('+id+')"id="'+id+'"><i class="fa fa-heart"></i><span id="likecount'+id+'">'+likecount+'</span></a>';
-
-                    $( "#"+id ).replaceWith(html);
-                }
-                    }
-            });}
-           function Unlike(id) {
-            let $likecount = $("#likecount_"+id);
-            let likecount = Number($likecount.val() + $likecount.next().text()) || 0;
-            var model={
-                TweetId: id,
-                AppUserId: 0};
-            $.ajax({
-            data: JSON.stringify(model),
-            type: "POST",
-            url: "/Like/Unlike/",
-            contentType: "application/json",
-            dataType: "JSON",
-            success: function (result) {
-                if(result=="Success"){
-                     
-                     if(likecount!=0)
-                    likecount= likecount-1;
-                    
-                   let html = '<a onclick="Like('+id+')"id="'+id+'"><i class="fa fa-heart-o"></i><span id="likecount'+id+'">'+likecount+'</span></a>';
-
-                    $( "#"+id ).replaceWith(html);
-                    }
-
-                    }
-            });}
-            </script>
-            }
-                

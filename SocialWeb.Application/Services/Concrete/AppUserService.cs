@@ -134,7 +134,17 @@ namespace SocialWeb.Application.Services.Concrete
 
         public async Task<ProfileSummaryDto> GetByName(string userName)
         {
-            var user = await _context.AppUsers.Where(x => x.UserName == userName).ProjectTo<ProfileSummaryDto>(_mapper.ConfigurationProvider).FirstAsync();
+            var user = await _unitOfWork.AppUser.GetFilteredFirstorDefault(
+                 selector: y => new ProfileSummaryDto
+                 {
+                     UserName = y.UserName,
+                     Name = y.Name,
+                     ImagePath = y.ImagePath,
+                     TweetsCount = y.Tweets.Count,
+                     FollowersCount = y.Followers.Count,
+                     FollowingsCount = y.Followings.Count
+                 },
+                 predicate: x => x.UserName == userName);
 
             return user;
         }
@@ -145,7 +155,10 @@ namespace SocialWeb.Application.Services.Concrete
 
         public async Task<int> UserIdFromName(string userName)
         {
-            var user = await _context.AppUsers.Where(x => x.UserName == userName).Select(x=> x.Id).FirstAsync();
+            var user = await _unitOfWork.AppUser.GetFilteredFirstorDefault(
+                 selector: x => x.Id,
+                 predicate: x => x.UserName == userName);
+
             return user;
         }
     }

@@ -30,14 +30,4 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
-</html> <script>
-    $(document).ready(function () {
-    var url = window.location.href;
-    $('a.list-group-item').each(function () {
-        if (this.href == url) {
-            $(this).addClass('active');
-            return false;
-        }
-    });
-});
-</script>
+</html> 

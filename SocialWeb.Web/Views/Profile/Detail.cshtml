@@ -3,4 +3,20 @@
 }
 
 @await Component.InvokeAsync("ProfileSummary", new { UserName = @ViewBag.userName })
-@await Component.InvokeAsync("UsersTweets", new { UserName = @ViewBag.userName })
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Activity Feed</h3>
+    </div>
+    <div class="panel-content panel-activity" style="padding-top: 15px">
+        <ul class="panel-activity__list" id="TweetsList" style="margin-top: 0px"></ul>
+        <div id="loader" class="text-center" style="display: none;">
+                        <img src='/images/loading.gif'> </div>
+    </div>
+</div>
+
+@section Scripts {
+   <script> var userName = '@(ViewBag.userName)';
+   </script>
+    <script src="~/js/get-tweets.js"></script>
+}
