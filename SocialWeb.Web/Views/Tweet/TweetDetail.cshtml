@@ -38,7 +38,7 @@
               @foreach (var item in Model.Mentions)
                 {
                      
-                    <li style="margin-top: 10px; font-size:14px"><div class="comment_header">
+                    <li id="mentionId" style="margin-top: 10px; font-size:14px"><div class="comment_header">
                         <img src="@item.UserImage" alt="" />
                         <a asp-controller="Profile" asp-action="Detail" asp-route-userName="@item.UserName">@item.Name</a> @@@item.UserName
                           <span class="pull-right"> <i class="fa fa-clock"></i>@Model.CreateDate</span>

@@ -31,11 +31,11 @@ namespace SocialWeb.Application.Services.Concrete
             _appUserService = appUserService;
         }
 
-        public async Task<List<UsersTweetsVm>> UsersTweets(string userName,int pageIndex)
+        public async Task<List<TimelineVm>> UsersTweets(string userName,int pageIndex)
         {
             var userId = await _appUserService.UserIdFromName(userName);
             var tweets = await _unitOfWork.Tweet.GetFilteredList(
-                selector: y => new UsersTweetsVm
+                selector: y => new TimelineVm
                 {
                     Id = y.Id,
                     Text = y.Text,

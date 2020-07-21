@@ -22,8 +22,12 @@
             <div class="profile-cover__info">
                 <ul class="nav">
                     <li><strong>@Model.TweetsCount</strong>Tweets</li>
-                    <li><strong>@Model.FollowingsCount</strong>Followers</li>
-                    <li><strong>@Model.FollowersCount</strong>Following</li>
+                    <li id="FollowersCount"><strong>@Model.FollowingsCount</strong>Followers</li>
+                    <li id="FollowingsCount"><strong>@Model.FollowersCount</strong>Following</li>
                 </ul>
             </div>
         </div>
+<script>
+var FollowersCount = @Model.FollowingsCount;
+var FollowingsCount = @Model.FollowersCount;
+</script>

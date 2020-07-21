@@ -15,7 +15,6 @@ $(document).ready(function () {
 
 function loadTweetList(pageIndex, userName) {
   
-    console.log(userName);
     $.ajax({
         url: "/Tweet/GetTweets",
         type: "POST",
@@ -29,7 +28,6 @@ function loadTweetList(pageIndex, userName) {
         data: { pageIndex: pageIndex, userName: userName },
         success: function (result) {
             var html = '';
-            console.log(result.length);
             if (result.length != 0) {
                 $.each(result, function (key, item) {
                     html += '<li><i class="activity__list__icon fa fa-question-circle-o"></i><div class="activity__list__header"><img src="' + item.UserImage + '" alt="" /><a href="/profile/' + item.UserName + '">' + item.Name + '</a> @' + item.UserName + '</div><div class="activity__list__body entry-content"><p>' + item.Text + '</p></div><div class="activity__list__footer">';
@@ -42,11 +40,9 @@ function loadTweetList(pageIndex, userName) {
                     html += '<a href="/tweet/' + item.Id + '"> <i class="fa fa-comments"></i>' + item.MentionsCount + '</><a href="#"> <i class="fa fa-share"></i>' + item.SharesCount + '</a><span><a href="/tweet/' + item.Id + '"> <i class="fa fa-clock"></i>' + formatTime(Date.parse(item.CreateDate)) + '</a></span></div></li>';
                 });
                 if (pageIndex == 1) {
-                    console.log(pageIndex);
                     $('#TweetsList').html(html);
                 }
                 else {
-                    console.log(pageIndex);
                     $('#TweetsList').append(html);
                 }
             }

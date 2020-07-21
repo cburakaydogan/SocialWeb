@@ -37,7 +37,6 @@ function Like(id) {
         TweetId: id,
         AppUserId: 0
     };
-    console.log(likecount);
     $.ajax({
         data: JSON.stringify(model),
         type: "POST",
@@ -115,40 +114,35 @@ $(document).ready(function () {
     });
 });
 
-function Follow() {
-    var model={ 
-    FollowerId: parseInt($("#FollowerId").val()),
-    FollowingId: parseInt($("#FollowingId").val())};
-    
+function Follow(isExist) {
+    var model = {
+        FollowerId: parseInt($("#FollowerId").val()),
+        FollowingId: parseInt($("#FollowingId").val()),
+        isExist: isExist
+    };
+    console.log(FollowersCount,FollowingsCount);
     $.ajax({
-    data: JSON.stringify(model),
-    type: "POST",
-    url: "/Follow/Follow/",
-    contentType: "application/json",
-    dataType: "JSON",
-    success: function (result) {
-        if(result=="Success")
-            $( "#Follow" ).replaceWith('<button onclick="UnFollow()" id="UnFollow" type="submit" class="btn btn-rounded btn-info"><i class="fa fa-minus"></i> Unfollow</button>');
-                           
+        data: { FollowerId: model.FollowerId, FollowingId: model.FollowingId, isExist: model.isExist },
+        type: "POST",
+        url: "/Follow/Follow/",
+        dataType: "JSON",
+        success: function (result) {
+            if (result == "Success") {
+                if (!isExist) {
+                    $("#Follow").replaceWith('<button onclick="Follow(true)" id="UnFollow" class="btn btn-rounded btn-info"><i class="fa fa-minus"></i> Unfollow</button>');
+                    FollowersCount = FollowersCount + 1;
+                    $("#FollowersCount").replaceWith('<li id="FollowersCount"><strong>'+ FollowersCount+'</strong>Followers</li>');
+                }
+                else {
+                    $("#UnFollow").replaceWith('<button onclick="Follow(false)" id="Follow" type="submit" class="btn btn-rounded btn-info"><i class="fa fa-plus"></i> Follow</button>');
+                    FollowersCount = FollowersCount - 1;
+                    $("#FollowersCount").replaceWith('<li id="FollowersCount"><strong>'+ FollowersCount+'</strong>Followers</li>');
+                }
             }
-    });}
-    function UnFollow() {
-    var model={ 
-    FollowerId: parseInt($("#FollowerId").val()),
-    FollowingId: parseInt($("#FollowingId").val())}; 
-
-    $.ajax({
-    data: JSON.stringify(model),
-    type: "POST",
-    url: "/Follow/UnFollow/",
-    contentType: "application/json",
-    dataType: "JSON",
-    success: function (result) {
-             if(result=="Success")
-            $( "#UnFollow" ).replaceWith('<button onclick="Follow()" id="Follow" type="submit" class="btn btn-rounded btn-info"><i class="fa fa-plus"></i> Follow</button>');
         }
     });
 }
+
 /* left navbar */
 $(document).ready(function () {
     var url = window.location.href;
@@ -161,32 +155,32 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-        
-    $('#btnSendMention').click(function(e) {
-   var model ={ Text : $("#Text").val(),
-                TweetId: parseInt($("#Id").val())};
 
-   
-    console.log(model);
-   $.ajax({
-   data: model,
-   type: "POST",
-   dataType: "JSON",
-   url: "/Mention/AddMention/",
-   success: function (result) {
-       if(result=="Success"){
-       $("#tweetValidation").addClass("alert alert-success").text("Sent Successfully!");
-       $("#tweetValidation").alert();
-       $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function(){
-       });
-       }
-       else{
-       $("#tweetValidation").addClass("alert alert-danger").text("Error Occured!");
-       $("#tweetValidation").alert();
-       $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function(){
-       });
-       }
-           }
-   });
-});
+    $('#btnSendMention').click(function (e) {
+        var model = {
+            Text: $("#Text").val(),
+            TweetId: parseInt($("#Id").val())
+        };
+
+        $.ajax({
+            data: model,
+            type: "POST",
+            dataType: "JSON",
+            url: "/Mention/AddMention/",
+            success: function (result) {
+                if (result == "Success") {
+                    $("#tweetValidation").addClass("alert alert-success").text("Sent Successfully!");
+                    $("#tweetValidation").alert();
+                    $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function () {
+                    });
+                }
+                else {
+                    $("#tweetValidation").addClass("alert alert-danger").text("Error Occured!");
+                    $("#tweetValidation").alert();
+                    $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function () {
+                    });
+                }
+            }
+        });
+    });
 });  

@@ -55,8 +55,9 @@ namespace SocialWeb.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> GetTweets(int pageIndex, int pageSize, string userName = null)
         {
-            
-            if (userName == null){
+
+            if (userName == null)
+            {
 
                 var claimsIdentity = (ClaimsIdentity) User.Identity;
                 var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -65,9 +66,11 @@ namespace SocialWeb.Web.Controllers
                 var tweets = await _tweetService.GetTimeline(userId, pageIndex);
 
                 return Json(tweets, new JsonSerializerSettings());
+
             }
 
-            else{
+            else
+            {
                 var tweets = await _tweetService.UsersTweets(userName, pageIndex);
 
                 return Json(tweets, new JsonSerializerSettings());
