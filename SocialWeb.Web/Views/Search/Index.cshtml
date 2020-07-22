@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Search Results";
+}
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Search Results</h3>
+    </div>
+    <div class="panel-content panel-activity" style="padding-top: 15px">
+        <ul class="panel-activity__list" id="SearchResult" style="margin-top: 0px"></ul>
+        <div id="loader" class="text-center" style="display: none;">
+                        <img src='/images/loading.gif'> </div>
+    </div>
+</div>
+@section Scripts {
+<script>
+    var Searchkeyword = '@(ViewBag.SearchKeyword)';
+</script>
+<script src="~/js/get-searchresult.js"></script>
+}

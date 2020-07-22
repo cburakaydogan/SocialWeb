@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Domain.Entities.Concrete;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SocialWeb.Application.Services.Abstract
@@ -21,6 +22,7 @@ namespace SocialWeb.Application.Services.Abstract
         Task<EditProfileDto> GetById(int id);
         Task EditUser(EditProfileDto id);
         Task<ProfileSummaryDto> GetByName(string userName);
+        Task<List<SearchUserDto>> SearchUser(string keyword, int pageIndex);
 
     }
 }

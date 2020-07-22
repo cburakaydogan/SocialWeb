@@ -184,3 +184,9 @@ $(document).ready(function () {
         });
     });
 });  
+
+function keypress(e){
+    if(e.keyCode === 13){
+        document.getElementById('searchform').submit();
+    }
+}

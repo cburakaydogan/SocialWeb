@@ -12,8 +12,8 @@
 
                 </div>  
                 <div class="mx-auto order-0">
-                  <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                  <form class="form-inline" id="searchform" asp-controller="Search" asp-action="Index" method="get">
+                    <input class="form-control mr-sm-2" type="search" name="keyword" onkeypress="keypress(event)"  placeholder="Search" aria-label="Search">
                 </form>
                 </div>      
                 <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
@@ -43,4 +43,3 @@
                     </ul>
                 </div>      </nav>
             </div>
-  

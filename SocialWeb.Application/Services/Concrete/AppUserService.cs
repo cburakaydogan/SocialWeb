@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authentication;
@@ -12,9 +16,6 @@ using SocialWeb.Application.Services.Abstract;
 using SocialWeb.Domain.Entities.Concrete;
 using SocialWeb.Domain.UnitOfWork;
 using SocialWeb.Infrastructure.Context;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace SocialWeb.Application.Services.Concrete
 {
@@ -24,16 +25,13 @@ namespace SocialWeb.Application.Services.Concrete
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly ApplicationDbContext _context;
 
-        public AppUserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationDbContext context)
+        public AppUserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
-            _context = context;
-
         }
         public async Task DeleteUser(params object[] parameters)
         {
@@ -48,7 +46,7 @@ namespace SocialWeb.Application.Services.Concrete
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                await _signInManager.SignInAsync(user, isPersistent : false);
             }
 
             return result;
@@ -73,7 +71,7 @@ namespace SocialWeb.Application.Services.Concrete
 
         public async Task<SignInResult> ExternalLoginSignIn(string provider, string key)
         {
-            return await _signInManager.ExternalLoginSignInAsync(provider, key, isPersistent: false, bypassTwoFactor: true);
+            return await _signInManager.ExternalLoginSignInAsync(provider, key, isPersistent : false, bypassTwoFactor : true);
         }
 
         public async Task<IdentityResult> ExternalRegister(ExternalLoginInfo info, ExternalLoginDto model)
@@ -85,7 +83,7 @@ namespace SocialWeb.Application.Services.Concrete
                 result = await _userManager.AddLoginAsync(user, info);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(user, isPersistent : false);
                 }
             }
             else
@@ -98,7 +96,7 @@ namespace SocialWeb.Application.Services.Concrete
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _signInManager.SignInAsync(user, isPersistent : false);
                     }
                 }
             }
@@ -106,7 +104,7 @@ namespace SocialWeb.Application.Services.Concrete
         }
 
         #endregion
-        public async Task<EditProfileDto> GetById (int id)
+        public async Task<EditProfileDto> GetById(int id)
         {
             var user = await _unitOfWork.AppUser.GetById(id);
 
@@ -122,10 +120,10 @@ namespace SocialWeb.Application.Services.Concrete
                     using var image = Image.Load(model.Image.OpenReadStream());
                     image.Mutate(x => x.Resize(256, 256));
                     image.Save("wwwroot/images/users/" + isUser.UserName + ".jpg");
-                    model.ImagePath =("/images/users/" + isUser.UserName + ".jpg");
+                    model.ImagePath = ("/images/users/" + isUser.UserName + ".jpg");
                 }
 
-                var user = _mapper.Map<EditProfileDto,AppUser>(model,isUser);
+                var user = _mapper.Map<EditProfileDto, AppUser>(model, isUser);
 
                 _unitOfWork.AppUser.Update(user);
                 await _unitOfWork.Commit();
@@ -135,16 +133,16 @@ namespace SocialWeb.Application.Services.Concrete
         public async Task<ProfileSummaryDto> GetByName(string userName)
         {
             var user = await _unitOfWork.AppUser.GetFilteredFirstorDefault(
-                 selector: y => new ProfileSummaryDto
-                 {
-                     UserName = y.UserName,
-                     Name = y.Name,
-                     ImagePath = y.ImagePath,
-                     TweetsCount = y.Tweets.Count,
-                     FollowersCount = y.Followers.Count,
-                     FollowingsCount = y.Followings.Count
-                 },
-                 predicate: x => x.UserName == userName);
+                selector: y => new ProfileSummaryDto
+                {
+                    UserName = y.UserName,
+                        Name = y.Name,
+                        ImagePath = y.ImagePath,
+                        TweetsCount = y.Tweets.Count,
+                        FollowersCount = y.Followers.Count,
+                        FollowingsCount = y.Followings.Count
+                },
+                predicate : x => x.UserName == userName);
 
             return user;
         }
@@ -156,10 +154,24 @@ namespace SocialWeb.Application.Services.Concrete
         public async Task<int> UserIdFromName(string userName)
         {
             var user = await _unitOfWork.AppUser.GetFilteredFirstorDefault(
-                 selector: x => x.Id,
-                 predicate: x => x.UserName == userName);
+                selector: x => x.Id,
+                predicate: x => x.UserName == userName);
 
             return user;
+        }
+        public async Task<List<SearchUserDto>> SearchUser(string keyword, int pageIndex)
+        {
+            var users = await _unitOfWork.AppUser.GetFilteredList(
+                selector: x=> new SearchUserDto
+                { Id= x.Id,
+                Name= x.Name,
+                UserName= x.UserName,
+                ImagePath = x.ImagePath},
+                predicate: x => x.UserName.Contains(keyword) || x.Name.Contains(keyword),
+                pageIndex: pageIndex,
+                pageSize: 10);
+
+            return users;
         }
     }
 }

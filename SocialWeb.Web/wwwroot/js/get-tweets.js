@@ -47,6 +47,7 @@ function loadTweetList(pageIndex, userName) {
                 }
             }
             else {
+                $('#TweetsList').html('<li><p class="text-center">There were no results found</p></li>');
                 $(window).unbind('scroll');
             }
 

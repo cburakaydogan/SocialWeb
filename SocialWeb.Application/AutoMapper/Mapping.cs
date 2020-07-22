@@ -16,6 +16,7 @@ namespace SocialWeb.Application.AutoMapper
             CreateMap<AppUser, ExternalLoginDto>().ReverseMap();
             CreateMap<AppUser, EditProfileDto>().ReverseMap();
             CreateMap<AppUser, ProfileSummaryDto>().ReverseMap();
+            CreateMap<AppUser, SearchUserDto>().ReverseMap();
 
             CreateMap<Follow, FollowDto>().ReverseMap();
 
