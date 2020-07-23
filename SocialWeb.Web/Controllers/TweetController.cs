@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SocialWeb.Application.Models.DTOs;
@@ -10,6 +11,7 @@ using SocialWeb.Application.Services.Abstract;
 
 namespace SocialWeb.Web.Controllers
 {
+    [Authorize]
     public class TweetController : Controller
     {
         private readonly ITweetService _tweetService;
@@ -23,32 +25,31 @@ namespace SocialWeb.Web.Controllers
             return View();
         }
 
+        [HttpPost]
         public async Task<IActionResult> AddTweet(SendTweetDto model)
         {
-            var claimsIdentity = (ClaimsIdentity) User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            int userId = Convert.ToInt32(claim.Value);
-            if (model.AppUserId == userId)
+            if (ModelState.IsValid)
             {
-                await _tweetService.AddTweet(model);
-                return Json("Success");
+                if (model.AppUserId == User.GetUserId())
+                {
+                    await _tweetService.AddTweet(model);
+                    return Json("Success");
+                }
+                else
+                {
+                    return Json("Failed");
+                }
             }
             else
             {
-                return Json("Failed");
+                return BadRequest(String.Join(Environment.NewLine, ModelState.Values.SelectMany(v => v.Errors).Select(v => v.ErrorMessage + " " + v.Exception)));
             }
-
         }
 
         public async Task<IActionResult> TweetDetail(int id)
         {
 
-            var claimsIdentity = (ClaimsIdentity) User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            int userId = Convert.ToInt32(claim.Value);
-
-            var tweet = await _tweetService.TweetDetail(id, userId);
-
+            var tweet = await _tweetService.TweetDetail(id, User.GetUserId()); //userid for isLiked
             return View(tweet);
         }
 
@@ -56,17 +57,11 @@ namespace SocialWeb.Web.Controllers
         public async Task<IActionResult> GetTweets(int pageIndex, int pageSize, string userName = null)
         {
 
-            if (userName == null)
-            {
+            if (userName == null){
 
-                var claimsIdentity = (ClaimsIdentity) User.Identity;
-                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-                int userId = Convert.ToInt32(claim.Value);
-
-                var tweets = await _tweetService.GetTimeline(userId, pageIndex);
+                var tweets = await _tweetService.GetTimeline(User.GetUserId(), pageIndex);
 
                 return Json(tweets, new JsonSerializerSettings());
-
             }
 
             else
@@ -75,7 +70,7 @@ namespace SocialWeb.Web.Controllers
 
                 return Json(tweets, new JsonSerializerSettings());
             }
-            
+
         }
 
     }

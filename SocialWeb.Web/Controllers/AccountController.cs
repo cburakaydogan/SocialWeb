@@ -85,7 +85,7 @@ namespace SocialWeb.Web.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
 
-            return View(model);
+            return View();
         }
         #endregion
 
@@ -167,12 +167,8 @@ namespace SocialWeb.Web.Controllers
         {
             if (userName == User.Identity.Name)
             {
-                var claimsIdentity = (ClaimsIdentity) User.Identity;
-                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-                int userId = Convert.ToInt32(claim.Value);
-
-                var user = await _userservice.GetById(userId);
-
+                var user = await _userservice.GetById(User.GetUserId());
+                
                 if (user == null)
                     return NotFound();
 
@@ -188,13 +184,8 @@ namespace SocialWeb.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfile(EditProfileDto model, IFormFile file)
         {
-            var claimsIdentity = (ClaimsIdentity) User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (model.UserName == User.Identity.Name)
-            {
-                model.Image = file;
-                await _userservice.EditUser(model);
-            }
+            model.Image = file;
+            await _userservice.EditUser(model);
             return View();
         }
         #endregion

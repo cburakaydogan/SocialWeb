@@ -112,20 +112,23 @@ namespace SocialWeb.Application.Services.Concrete
         }
         public async Task EditUser(EditProfileDto model)
         {
-            var isUser = await _unitOfWork.AppUser.GetById(model.Id);
-            if (isUser != null)
+            var user = await _unitOfWork.AppUser.GetById(model.Id);
+
+            if (user != null)
             {
                 if (model.Image != null)
                 {
                     using var image = Image.Load(model.Image.OpenReadStream());
                     image.Mutate(x => x.Resize(256, 256));
-                    image.Save("wwwroot/images/users/" + isUser.UserName + ".jpg");
-                    model.ImagePath = ("/images/users/" + isUser.UserName + ".jpg");
+                    image.Save("wwwroot/images/users/" + user.UserName + ".jpg");
+                    model.ImagePath = ("/images/users/" + user.UserName + ".jpg");
                 }
+                if(model.Password !=null){
+                     user.PasswordHash = _userManager.PasswordHasher.HashPassword(user,model.Password);
+                }
+                var updatedUser = _mapper.Map<EditProfileDto, AppUser>(model,user);
+                await _userManager.UpdateAsync(updatedUser);
 
-                var user = _mapper.Map<EditProfileDto, AppUser>(model, isUser);
-
-                _unitOfWork.AppUser.Update(user);
                 await _unitOfWork.Commit();
             }
         }
@@ -162,14 +165,16 @@ namespace SocialWeb.Application.Services.Concrete
         public async Task<List<SearchUserDto>> SearchUser(string keyword, int pageIndex)
         {
             var users = await _unitOfWork.AppUser.GetFilteredList(
-                selector: x=> new SearchUserDto
-                { Id= x.Id,
-                Name= x.Name,
-                UserName= x.UserName,
-                ImagePath = x.ImagePath},
-                predicate: x => x.UserName.Contains(keyword) || x.Name.Contains(keyword),
-                pageIndex: pageIndex,
-                pageSize: 10);
+                selector: x => new SearchUserDto
+                {
+                    Id = x.Id,
+                        Name = x.Name,
+                        UserName = x.UserName,
+                        ImagePath = x.ImagePath
+                },
+                predicate : x => x.UserName.Contains(keyword) || x.Name.Contains(keyword),
+                pageIndex : pageIndex,
+                pageSize : 10);
 
             return users;
         }

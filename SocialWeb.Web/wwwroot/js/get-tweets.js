@@ -14,7 +14,7 @@ $(document).ready(function () {
 });
 
 function loadTweetList(pageIndex, userName) {
-  
+   
     $.ajax({
         url: "/Tweet/GetTweets",
         type: "POST",
@@ -25,7 +25,11 @@ function loadTweetList(pageIndex, userName) {
             $("#loader").hide();
         },
         async: true,
-        data: { pageIndex: pageIndex, userName: userName },
+        headers: {
+            RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+        },
+        dataType: "json",
+        data: {pageIndex: pageIndex, userName: userName },
         success: function (result) {
             var html = '';
             if (result.length != 0) {
@@ -45,15 +49,16 @@ function loadTweetList(pageIndex, userName) {
                 else {
                     $('#TweetsList').append(html);
                 }
+            
             }
-            else {
-                $('#TweetsList').html('<li><p class="text-center">There were no results found</p></li>');
+            else{
                 $(window).unbind('scroll');
             }
 
         },
         error: function (errormessage) {
-            alert(errormessage.responseText);
+            $('#TweetsList').html('<li><p class="text-center">There were no results found</p></li>');
+            $(window).unbind('scroll');
         }
     });
 }

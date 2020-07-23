@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Application.Services.Abstract;
@@ -11,10 +12,10 @@ using SocialWeb.Application.Services.Abstract;
 namespace SocialWeb.Web.Controllers
 {
     [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class FollowController : Controller
     {
         private readonly IFollowService _followService;
-
         public FollowController(IFollowService followService)
         {
             _followService = followService;
@@ -27,11 +28,9 @@ namespace SocialWeb.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Follow(FollowDto model)
         {
-            var claimsIdentity = (ClaimsIdentity) User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (!model.isExist)
             {
-                if (model.FollowerId == Convert.ToInt32(claim.Value))
+                if (model.FollowerId == User.GetUserId())
                 {
                     await _followService.Follow(model);
                     return Json("Success");
@@ -43,7 +42,7 @@ namespace SocialWeb.Web.Controllers
             }
             else
             {
-                if (model.FollowerId == Convert.ToInt32(claim.Value))
+                if (model.FollowerId == User.GetUserId())
                 {
                     await _followService.Unfollow(model);
                     return Json("Success");

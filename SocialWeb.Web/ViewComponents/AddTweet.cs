@@ -8,10 +8,6 @@ namespace SocialWeb.Web.ViewComponents
 {
     public class AddTweet:ViewComponent
     {
-        public AddTweet()
-        {
-            
-        }
         public IViewComponentResult Invoke()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;

@@ -10,6 +10,8 @@ using SocialWeb.Web.Models;
 
 namespace SocialWeb.Web.Controllers
 {
+    [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -18,7 +20,6 @@ namespace SocialWeb.Web.Controllers
         {
             _logger = logger;
         }
-        [Authorize]
         public IActionResult Index()
         {
             return View();

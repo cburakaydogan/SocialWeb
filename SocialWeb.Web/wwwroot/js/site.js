@@ -43,6 +43,9 @@ function Like(id) {
         url: "/Like/Like/",
         contentType: "application/json",
         dataType: "JSON",
+        headers: {
+            RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+        },
         success: function (result) {
             if (result == "Success") {
                 likecount = likecount + 1;
@@ -65,6 +68,9 @@ function Unlike(id) {
         type: "POST",
         url: "/Like/Unlike/",
         contentType: "application/json",
+        headers: {
+            RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+        },
         dataType: "JSON",
         success: function (result) {
             if (result == "Success") {
@@ -98,6 +104,7 @@ $(document).ready(function () {
             url: "/Tweet/AddTweet/",
             success: function (result) {
                 if (result == "Success") {
+                    document.getElementById("Text").value = "";
                     $("#tweetValidation").addClass("alert alert-success").text("Sent Successfully!");
                     $("#tweetValidation").alert();
                     $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function () {
@@ -109,6 +116,13 @@ $(document).ready(function () {
                     $("#tweetValidation").fadeTo(3000, 3000).slideUp(800, function () {
                     });
                 }
+            },
+            error: function(result) {
+                console.log(result);
+                $("#tweetValidation").addClass("alert alert-danger").text(result.responseText);
+                $("#tweetValidation").alert();
+                $("#tweetValidation").fadeTo(3000, 3000).slideUp(2000, function () {
+                });
             }
         });
     });
@@ -120,23 +134,25 @@ function Follow(isExist) {
         FollowingId: parseInt($("#FollowingId").val()),
         isExist: isExist
     };
-    console.log(FollowersCount,FollowingsCount);
     $.ajax({
         data: { FollowerId: model.FollowerId, FollowingId: model.FollowingId, isExist: model.isExist },
         type: "POST",
         url: "/Follow/Follow/",
+        headers: {
+            RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+        },
         dataType: "JSON",
         success: function (result) {
             if (result == "Success") {
                 if (!isExist) {
                     $("#Follow").replaceWith('<button onclick="Follow(true)" id="UnFollow" class="btn btn-rounded btn-info"><i class="fa fa-minus"></i> Unfollow</button>');
                     FollowersCount = FollowersCount + 1;
-                    $("#FollowersCount").replaceWith('<li id="FollowersCount"><strong>'+ FollowersCount+'</strong>Followers</li>');
+                    $("#FollowersCount").replaceWith('<li id="FollowersCount"><strong>' + FollowersCount + '</strong>Followers</li>');
                 }
                 else {
                     $("#UnFollow").replaceWith('<button onclick="Follow(false)" id="Follow" type="submit" class="btn btn-rounded btn-info"><i class="fa fa-plus"></i> Follow</button>');
                     FollowersCount = FollowersCount - 1;
-                    $("#FollowersCount").replaceWith('<li id="FollowersCount"><strong>'+ FollowersCount+'</strong>Followers</li>');
+                    $("#FollowersCount").replaceWith('<li id="FollowersCount"><strong>' + FollowersCount + '</strong>Followers</li>');
                 }
             }
         }
@@ -165,6 +181,9 @@ $(document).ready(function () {
         $.ajax({
             data: model,
             type: "POST",
+            headers: {
+                RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+            },
             dataType: "JSON",
             url: "/Mention/AddMention/",
             success: function (result) {
@@ -183,10 +202,10 @@ $(document).ready(function () {
             }
         });
     });
-});  
+});
 
-function keypress(e){
-    if(e.keyCode === 13){
+function keypress(e) {
+    if (e.keyCode === 13) {
         document.getElementById('searchform').submit();
     }
 }

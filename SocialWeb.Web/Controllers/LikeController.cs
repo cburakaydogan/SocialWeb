@@ -11,6 +11,7 @@ using SocialWeb.Application.Services.Abstract;
 namespace SocialWeb.Web.Controllers
 {
     [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class LikeController : Controller
     {
         private readonly ILikeService _likeService;
@@ -27,22 +28,20 @@ namespace SocialWeb.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Like([FromBody] LikeDto model)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            model.AppUserId = Convert.ToInt32(claim.Value);
+            model.AppUserId = User.GetUserId();
 
             await _likeService.Like(model);
+
             return Json("Success");
         }
 
         [HttpPost]
         public async Task<IActionResult> Unlike([FromBody] LikeDto model)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            model.AppUserId = Convert.ToInt32(claim.Value);
+            model.AppUserId = User.GetUserId();
 
             await _likeService.Unlike(model);
+
             return Json("Success");
         }
     }

@@ -61,7 +61,9 @@ namespace SocialWeb.Web
             services.AddControllersWithViews().AddNewtonsoftJson()
                 .AddFluentValidation();
             services.AddTransient<IValidator<RegisterDto>, RegisterValidation>();
+            services.AddTransient<IValidator<LoginDto>, LoginValidation>();
             services.AddTransient<IValidator<ExternalLoginDto>, ExternalLoginValidation>();
+            services.AddTransient<IValidator<SendTweetDto>, TweetValidation>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

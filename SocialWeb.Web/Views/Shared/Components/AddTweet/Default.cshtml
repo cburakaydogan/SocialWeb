@@ -1,6 +1,7 @@
 @model SendTweetDto
 
  <form  class="panel-activity__status" id="formAddTweet" enctype="multipart/form-data">
+  <div asp-validation-summary="All" class="text-danger"></div>
      <div id="tweetValidation" role="alert"></div>
      <input hidden asp-for="AppUserId" />
      <textarea name="Text" id="Text" type="text" placeholder="Share what you've been up to..." class="form-control"></textarea>

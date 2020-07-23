@@ -21,13 +21,17 @@ function loadSearchResults(pageIndex, Searchkeyword) {
             $("#loader").hide();
         },
         async: true,
-        data: { keyword: Searchkeyword, pageIndex: pageIndex },
+        headers: {
+            RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+        },
+        dataType: "json",
+        data: { keyword: Searchkeyword, pageIndex: pageIndex},
         success: function (result) {
             var html = '';
-            console.log(result);
+            
             if (result.length != 0) {
                 $.each(result, function (key, item) {
-                    html += '<li><i class="activity__list__icon fa fa-question-circle-o"></i><div class="activity__list__header"><img src="' + item.ImagePath + '" alt="" /><a href="/profile/' + item.UserName + '">' + item.Name + '</a> @@'+item.UserName+'</div></li>';
+                    html += '<li><i class="activity__list__icon fa fa-question-circle-o"></i><div class="activity__list__header"><img src="' + item.ImagePath + '" alt="" /><a href="/profile/' + item.UserName + '">' + item.Name + '</a> @'+item.UserName+'</div></li>';
                 });
                 if (pageIndex == 1) {
                     $('#SearchResult').html(html);
@@ -37,14 +41,13 @@ function loadSearchResults(pageIndex, Searchkeyword) {
                 }
             }
             else {
-                $('#SearchResult').html('<li><p class="text-center">There were no results found</p></li>');
                 $(window).unbind('scroll');
             }
 
         },
         error: function (errormessage) {
             $('#SearchResult').html('<li><p class="text-center">There were no results found</p></li>');
-                $(window).unbind('scroll');
+            $(window).unbind('scroll');
         }
     });
 }

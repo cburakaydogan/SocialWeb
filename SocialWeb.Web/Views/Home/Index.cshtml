@@ -20,4 +20,6 @@
 
 @section Scripts {
     <script src="~/js/get-tweets.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

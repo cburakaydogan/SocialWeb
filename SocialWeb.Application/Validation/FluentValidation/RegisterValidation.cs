@@ -16,9 +16,9 @@ namespace SocialWeb.Application.Validation.FluentValidation
 
             RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage("Passwords do not match");
 
-            RuleFor(x => x.Name).NotEmpty().MinimumLength(3).MaximumLength(50).WithMessage("Minimum 3, maximum 50 character.");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Name can not be empty.").MinimumLength(3).MaximumLength(50).WithMessage("Minimum 3, maximum 50 character.");
 
-            RuleFor(x => x.UserName).NotEmpty().MinimumLength(3).MaximumLength(50).WithMessage("Minimum 3, maximum 50 character.");
+            RuleFor(x => x.UserName).NotEmpty().WithMessage("Username can not be empty.").MinimumLength(3).MaximumLength(50).WithMessage("Minimum 3, maximum 50 character.");
         }
     }
 }

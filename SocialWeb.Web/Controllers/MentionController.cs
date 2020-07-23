@@ -1,12 +1,15 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Application.Services.Abstract;
 
 namespace SocialWeb.Web.Controllers
 {
+    [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class MentionController : Controller
     {
         private IMentionService _mentionService { get; set; }
@@ -17,10 +20,8 @@ namespace SocialWeb.Web.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddMention(AddMentionDto model)
-        {
-            var claimsIdentity = (ClaimsIdentity) User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            model.AppUserId = Convert.ToInt32(claim.Value);
+        {   
+            model.AppUserId = User.GetUserId();
             await _mentionService.AddMention(model);
             return Json("Success");
         }
