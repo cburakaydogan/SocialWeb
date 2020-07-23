@@ -186,7 +186,7 @@ namespace SocialWeb.Web.Controllers
         {
             model.Image = file;
             await _userservice.EditUser(model);
-            return View();
+           return RedirectToAction(nameof(HomeController.Index), "Home");
         }
         #endregion
 

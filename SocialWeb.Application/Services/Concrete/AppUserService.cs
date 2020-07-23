@@ -113,7 +113,6 @@ namespace SocialWeb.Application.Services.Concrete
         public async Task EditUser(EditProfileDto model)
         {
             var user = await _unitOfWork.AppUser.GetById(model.Id);
-
             if (user != null)
             {
                 if (model.Image != null)
@@ -121,15 +120,39 @@ namespace SocialWeb.Application.Services.Concrete
                     using var image = Image.Load(model.Image.OpenReadStream());
                     image.Mutate(x => x.Resize(256, 256));
                     image.Save("wwwroot/images/users/" + user.UserName + ".jpg");
-                    model.ImagePath = ("/images/users/" + user.UserName + ".jpg");
+                    user.ImagePath = ("/images/users/" + user.UserName + ".jpg");
+                    _unitOfWork.AppUser.Update(user);
+                    await _unitOfWork.Commit();
                 }
-                if(model.Password !=null){
-                     user.PasswordHash = _userManager.PasswordHasher.HashPassword(user,model.Password);
-                }
-                var updatedUser = _mapper.Map<EditProfileDto, AppUser>(model,user);
-                await _userManager.UpdateAsync(updatedUser);
 
-                await _unitOfWork.Commit();
+                if (model.Password != null)
+                {
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, model.Password);
+                    await _userManager.UpdateAsync(user);
+                }
+                if (model.UserName != user.UserName)
+                {
+                    var isUserNameExist = await _userManager.FindByNameAsync(model.UserName);
+
+                    if (isUserNameExist == null){
+                        await _userManager.SetUserNameAsync(user, model.UserName);
+                        user.UserName = model.UserName;
+                        await _signInManager.SignInAsync(user, isPersistent: true);
+                        }
+                }
+                if (model.Name != user.Name)
+                {
+                    user.Name = model.Name;
+                    _unitOfWork.AppUser.Update(user);
+                    await _unitOfWork.Commit();
+                }
+                if (model.Email != user.Email)
+                {
+                    var isEmailExist = await _userManager.FindByEmailAsync(model.Email);
+                    if (isEmailExist == null)
+                        await _userManager.SetEmailAsync(user, model.Email);
+                }
+
             }
         }
 
