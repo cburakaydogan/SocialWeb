@@ -34,9 +34,11 @@ function loadTweetList(pageIndex, userName, authUser) {
             var html = '';
             if (result.length != 0) {
                 $.each(result, function (key, item) {
-
-                    html += '<li id="tweet_'+item.Id+'"><i class="activity__list__icon fa fa-question-circle-o"></i><div class="activity__list__header"><img src="' + item.UserImage + '" alt="" /><a href="/profile/' + item.UserName + '">' + item.Name + '</a> @' + item.UserName + '</div><div class="activity__list__body entry-content"><p>' + item.Text + '</p></div><div class="activity__list__footer">';
-
+                    if (item.ImagePath == null)
+                        html += '<li id="tweet_' + item.Id + '"><i class="activity__list__icon fa fa-question-circle-o"></i><div class="activity__list__header"><img src="' + item.UserImage + '" alt="" /><a href="/profile/' + item.UserName + '">' + item.Name + '</a> @' + item.UserName + '</div><div class="activity__list__body entry-content"><p>' + item.Text + '</p></div><div class="activity__list__footer">';
+                    else {
+                        html += '<li id="tweet_' + item.Id + '"><i class="activity__list__icon fa fa-question-circle-o"></i><div class="activity__list__header"><img src="' + item.UserImage + '" alt="" /><a href="/profile/' + item.UserName + '">' + item.Name + '</a> @' + item.UserName + '</div><div class="activity__list__body entry-content"><p>' + item.Text + '</p><ul class="gallery"><li><img src="' + item.ImagePath + '" alt="" /></li></ul></div><div class="activity__list__footer">';
+                    }
                     if (item.isLiked) {
                         html += '<a onclick="Unlike(' + item.Id + ')" id="' + item.Id + '"> <i class="fa fa-heart"></i><span id="likecount_' + item.Id + '">' + item.LikesCount + '</span></a>';
                     }
@@ -46,7 +48,7 @@ function loadTweetList(pageIndex, userName, authUser) {
                     if (item.UserName == authUser) {
                         html += '<a href="/tweet/' + item.Id + '"> <i class="fa fa-comments"></i>' + item.MentionsCount + '</a><a onclick="DeleteTweet(' + item.Id + ')" id="' + item.Id + '"> <i class="fa fa-trash"></i></a><span><a href="/tweet/' + item.Id + '"> <i class="fa fa-clock"></i>' + formatTime(Date.parse(item.CreateDate)) + '</a></span></div></li>';
                     }
-                    else{
+                    else {
                         html += '<a href="/tweet/' + item.Id + '"> <i class="fa fa-comments"></i>' + item.MentionsCount + '</a><a href="#"> <i class="fa fa-share"></i>' + item.SharesCount + '</a><span><a href="/tweet/' + item.Id + '"> <i class="fa fa-clock"></i>' + formatTime(Date.parse(item.CreateDate)) + '</a></span></div></li>';
                     }
 

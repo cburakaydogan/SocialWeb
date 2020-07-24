@@ -20,6 +20,9 @@
                     <p>
                         @Model.Text
                     </p>
+                    @if(Model.ImagePath!=null){
+                        <ul class="gallery"><li><img src=@Model.ImagePath alt="" /></li></ul>
+                    }
                 </div>
                 <div class="activity__list__footer">
                     @if (Model.isLiked)

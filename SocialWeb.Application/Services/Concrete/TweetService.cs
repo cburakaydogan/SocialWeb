@@ -21,7 +21,7 @@ namespace SocialWeb.Application.Services.Concrete
         private readonly IFollowService _followService;
         private readonly IAppUserService _appUserService;
 
-        public TweetService(IUnitOfWork unitOfWork, IMapper mapper, IFollowService followService , IAppUserService appUserService)
+        public TweetService(IUnitOfWork unitOfWork, IMapper mapper, IFollowService followService, IAppUserService appUserService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -29,32 +29,32 @@ namespace SocialWeb.Application.Services.Concrete
             _appUserService = appUserService;
         }
 
-        public async Task<List<TimelineVm>> UsersTweets(string userName,int id,int pageIndex)
+        public async Task<List<TimelineVm>> UsersTweets(string userName, int id, int pageIndex)
         {
             var userId = await _appUserService.UserIdFromName(userName);
             var tweets = await _unitOfWork.Tweet.GetFilteredList(
                 selector: y => new TimelineVm
                 {
                     Id = y.Id,
-                    Text = y.Text,
-                    ImagePath = y.ImagePath,
-                    AppUserId = y.AppUserId,
-                    LikesCount = y.Likes.Count,
-                    MentionsCount = y.Mentions.Count,
-                    SharesCount = y.Shares.Count,
-                    CreateDate = y.CreateDate,
-                    UserName = y.AppUser.Name,
-                    UserImage = y.AppUser.ImagePath,
-                    Name = y.AppUser.Name,
-                    isLiked = y.Likes.Any(z => z.AppUserId == id)
+                        Text = y.Text,
+                        ImagePath = y.ImagePath,
+                        AppUserId = y.AppUserId,
+                        LikesCount = y.Likes.Count,
+                        MentionsCount = y.Mentions.Count,
+                        SharesCount = y.Shares.Count,
+                        CreateDate = y.CreateDate,
+                        UserName = y.AppUser.Name,
+                        UserImage = y.AppUser.ImagePath,
+                        Name = y.AppUser.Name,
+                        isLiked = y.Likes.Any(z => z.AppUserId == id)
                 },
-                orderBy: z => z.OrderByDescending(x => x.CreateDate),
-                predicate: x => x.AppUserId == userId,
-                include: x => x
-              .Include(z => z.AppUser)
-              .ThenInclude(z => z.Followers)
-              .Include(z => z.Likes),
-              pageIndex: pageIndex);
+                orderBy : z => z.OrderByDescending(x => x.CreateDate),
+                predicate : x => x.AppUserId == userId,
+                include : x => x
+                .Include(z => z.AppUser)
+                .ThenInclude(z => z.Followers)
+                .Include(z => z.Likes),
+                pageIndex : pageIndex);
 
             // I did not use Automapper in this projection query because of generic repository pattern. 
 
@@ -69,33 +69,33 @@ namespace SocialWeb.Application.Services.Concrete
 
         }
 
-        public async Task<List<TimelineVm>> GetTimeline(int userId,int pageIndex)
+        public async Task<List<TimelineVm>> GetTimeline(int userId, int pageIndex)
         {
             List<int> followings = await _followService.FollowingList(userId);
 
             var tweets = await _unitOfWork.Tweet.GetFilteredList(
-                 selector: y => new TimelineVm
-                 {
-                     Id = y.Id,
-                     Text = y.Text,
-                     ImagePath = y.ImagePath,
-                     AppUserId = y.AppUserId,
-                     LikesCount = y.Likes.Count,
-                     MentionsCount = y.Mentions.Count,
-                     SharesCount = y.Shares.Count,
-                     CreateDate = y.CreateDate,
-                     UserName = y.AppUser.Name,
-                     UserImage = y.AppUser.ImagePath,
-                     Name = y.AppUser.Name,
-                     isLiked = y.Likes.Any(z => z.AppUserId == userId)
-                 },
-                 orderBy: z => z.OrderByDescending(x => x.CreateDate),
-                 predicate: x => followings.Contains(x.AppUserId),
-                 include: x => x
-               .Include(z => z.AppUser)
-               .ThenInclude(z => z.Followers)
-               .Include(z => z.Likes),
-               pageIndex: pageIndex);
+                selector: y => new TimelineVm
+                {
+                    Id = y.Id,
+                        Text = y.Text,
+                        ImagePath = y.ImagePath,
+                        AppUserId = y.AppUserId,
+                        LikesCount = y.Likes.Count,
+                        MentionsCount = y.Mentions.Count,
+                        SharesCount = y.Shares.Count,
+                        CreateDate = y.CreateDate,
+                        UserName = y.AppUser.Name,
+                        UserImage = y.AppUser.ImagePath,
+                        Name = y.AppUser.Name,
+                        isLiked = y.Likes.Any(z => z.AppUserId == userId)
+                },
+                orderBy : z => z.OrderByDescending(x => x.CreateDate),
+                predicate : x => followings.Contains(x.AppUserId),
+                include : x => x
+                .Include(z => z.AppUser)
+                .ThenInclude(z => z.Followers)
+                .Include(z => z.Likes),
+                pageIndex : pageIndex);
 
             //var tweets = await _context.Tweets
             //   .Include(x => x.AppUser).ThenInclude(x => x.Followers)
@@ -114,9 +114,11 @@ namespace SocialWeb.Application.Services.Concrete
             if (model.Image != null)
             {
                 using var image = Image.Load(model.Image.OpenReadStream());
-                image.Mutate(x => x.Resize(7500, 750));
-                image.Save("wwwroot/images/tweets/" + Guid.NewGuid() + ".jpg");
-                model.ImagePath = ("/images/tweets/" + Guid.NewGuid() + ".jpg");
+                if(image.Width!>600)
+               image.Mutate(x => x.Resize(600, 0));
+                Guid name= Guid.NewGuid();
+               image.Save("wwwroot/images/tweets/" + name + ".jpg");
+                model.ImagePath = ("/images/tweets/" + name + ".jpg");
             }
 
             var tweet = _mapper.Map<SendTweetDto, Tweet>(model);
@@ -131,36 +133,35 @@ namespace SocialWeb.Application.Services.Concrete
                 selector: y => new TweetDetailVm
                 {
                     Id = y.Id,
-                    Text = y.Text,
-                    ImagePath = y.ImagePath,
-                    AppUserId = y.AppUserId,
-                    LikesCount = y.Likes.Count,
-                    MentionsCount = y.Mentions.Count,
-                    SharesCount = y.Shares.Count,
-                    CreateDate = y.CreateDate,
-                    UserName = y.AppUser.Name,
-                    UserImage = y.AppUser.ImagePath,
-                    Name = y.AppUser.Name,
-                    Mentions = y.Mentions.Where(z => z.TweetId == y.Id).OrderByDescending(z => z.CreateDate).Select(x => new MentionDto
-                    {
-                        Id = x.Id,
-                        Text = x.Text,
-                        AppUserId = x.AppUserId,
-                        UserName = x.AppUser.UserName,
-                        Name = x.AppUser.Name,
-                        TweetId = x.TweetId,
-                        CreateDate = x.CreateDate,
-                        UserImage = x.AppUser.ImagePath
-                    }).ToList(),
-                    isLiked = y.Likes.Any(z => z.AppUserId == userId)
+                        Text = y.Text,
+                        ImagePath = y.ImagePath,
+                        AppUserId = y.AppUserId,
+                        LikesCount = y.Likes.Count,
+                        MentionsCount = y.Mentions.Count,
+                        SharesCount = y.Shares.Count,
+                        CreateDate = y.CreateDate,
+                        UserName = y.AppUser.Name,
+                        UserImage = y.AppUser.ImagePath,
+                        Name = y.AppUser.Name,
+                        Mentions = y.Mentions.Where(z => z.TweetId == y.Id).OrderByDescending(z => z.CreateDate).Select(x => new MentionDto
+                        {
+                            Id = x.Id,
+                                Text = x.Text,
+                                AppUserId = x.AppUserId,
+                                UserName = x.AppUser.UserName,
+                                Name = x.AppUser.Name,
+                                TweetId = x.TweetId,
+                                CreateDate = x.CreateDate,
+                                UserImage = x.AppUser.ImagePath
+                        }).ToList(),
+                        isLiked = y.Likes.Any(z => z.AppUserId == userId)
                 },
-                orderBy: z => z.OrderByDescending(x => x.CreateDate),
-                predicate: x => x.Id == id,
-                include: x => x
-              .Include(z => z.AppUser)
-              .ThenInclude(z => z.Followers)
-              .Include(z => z.Likes));
-
+                orderBy : z => z.OrderByDescending(x => x.CreateDate),
+                predicate : x => x.Id == id,
+                include : x => x
+                .Include(z => z.AppUser)
+                .ThenInclude(z => z.Followers)
+                .Include(z => z.Likes));
 
             //var tweet = await _context.Tweets.Where(x => x.Id == id)
             //.Include(x => x.Likes)
@@ -173,9 +174,10 @@ namespace SocialWeb.Application.Services.Concrete
         public async Task DeleteTweet(int id, int userId)
         {
 
-            var tweet = await _unitOfWork.Tweet.FirstOrDefault(x=> x.Id == id);
+            var tweet = await _unitOfWork.Tweet.FirstOrDefault(x => x.Id == id);
 
-            if(userId == tweet.AppUserId){
+            if (userId == tweet.AppUserId)
+            {
                 _unitOfWork.Tweet.Delete(tweet);
                 await _unitOfWork.Commit();
             }
