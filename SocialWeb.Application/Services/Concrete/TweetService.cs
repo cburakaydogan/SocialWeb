@@ -43,7 +43,7 @@ namespace SocialWeb.Application.Services.Concrete
                         MentionsCount = y.Mentions.Count,
                         SharesCount = y.Shares.Count,
                         CreateDate = y.CreateDate,
-                        UserName = y.AppUser.Name,
+                        UserName = y.AppUser.UserName,
                         UserImage = y.AppUser.ImagePath,
                         Name = y.AppUser.Name,
                         isLiked = y.Likes.Any(z => z.AppUserId == id)
@@ -84,7 +84,7 @@ namespace SocialWeb.Application.Services.Concrete
                         MentionsCount = y.Mentions.Count,
                         SharesCount = y.Shares.Count,
                         CreateDate = y.CreateDate,
-                        UserName = y.AppUser.Name,
+                        UserName = y.AppUser.UserName,
                         UserImage = y.AppUser.ImagePath,
                         Name = y.AppUser.Name,
                         isLiked = y.Likes.Any(z => z.AppUserId == userId)

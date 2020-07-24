@@ -53,7 +53,7 @@ namespace SocialWeb.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetTweets(int pageIndex, int pageSize, string userName = null)
+        public async Task<IActionResult> GetTweets(int pageIndex, int pageSize, string userName=null)
         {
 
             if (userName == null){

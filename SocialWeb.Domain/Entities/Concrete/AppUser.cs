@@ -19,7 +19,7 @@ namespace SocialWeb.Domain.Entities.Concrete
             Followings = new List<Follow>();
         }
         public string Name { get; set; }
-        public string ImagePath { get; set; }
+        public string ImagePath { get; set; } = "/images/users/default.jpg";
         public DateTime CreateDate { get { return DateTime.Now; } private set { } }
         public DateTime? ModifiedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
