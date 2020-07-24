@@ -21,6 +21,8 @@ namespace SocialWeb.Application.Services.Abstract
         Task EditUser(EditProfileDto id);
         Task<ProfileSummaryDto> GetByName(string userName);
         Task<List<SearchUserDto>> SearchUser(string keyword, int pageIndex);
+        Task<List<FollowListVm>> UsersFollowings(int id, int pageIndex);
+        Task<List<FollowListVm>> UsersFollowers(int id, int pageIndex);
 
     }
 }

@@ -10,5 +10,7 @@ namespace SocialWeb.Application.Services.Abstract
         Task Unfollow(FollowDto model);
         Task<bool> isFollowing(FollowDto model);
         Task<List<int>> FollowingList(int id);
+        Task<List<int>> FollowerList(int id);
+
     }
 }

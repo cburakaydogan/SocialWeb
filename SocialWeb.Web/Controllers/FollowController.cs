@@ -20,7 +20,6 @@ namespace SocialWeb.Web.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Follow(FollowDto model)
         {

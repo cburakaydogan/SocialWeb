@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Application.Services.Abstract;
 using SocialWeb.Domain.Entities.Concrete;
 using SocialWeb.Domain.UnitOfWork;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SocialWeb.Application.Services.Concrete
 {
@@ -28,14 +28,22 @@ namespace SocialWeb.Application.Services.Concrete
                 await _unitOfWork.Commit();
             }
         }
-
+        
         public async Task<List<int>> FollowingList(int id)
         {
             var followingList = await _unitOfWork.Follow.GetFilteredList(
-                 selector: y => y.FollowingId,
-                 predicate: x => x.FollowerId == id);
+                selector: y => y.FollowingId,
+                predicate: x => x.FollowerId == id);
 
             return followingList;
+        }
+        public async Task<List<int>> FollowerList(int id)
+        {
+            var followerList = await _unitOfWork.Follow.GetFilteredList(
+                selector: y => y.FollowerId,
+                predicate: x => x.FollowingId == id);
+
+            return followerList;
         }
         public async Task<bool> isFollowing(FollowDto model)
         {

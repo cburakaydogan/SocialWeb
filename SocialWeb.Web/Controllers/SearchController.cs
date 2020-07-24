@@ -17,18 +17,18 @@ namespace SocialWeb.Web.Controllers
             _userService = userService;
         }
 
-        public IActionResult Index(string keyword)
+        public IActionResult Index(string userName)
         {
-            ViewBag.SearchKeyword = keyword;
+            ViewBag.SearchKeyword = userName;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> SearchUser(string keyword, int pageIndex)
+        public async Task<IActionResult> Index(string userName, int pageIndex)
         {
-            if (!String.IsNullOrEmpty(keyword))
+            if (!String.IsNullOrEmpty(userName))
             {
-                var users = await _userService.SearchUser(keyword, pageIndex);
+                var users = await _userService.SearchUser(userName, pageIndex);
                 
                 return Json(users, new JsonSerializerSettings());
             }

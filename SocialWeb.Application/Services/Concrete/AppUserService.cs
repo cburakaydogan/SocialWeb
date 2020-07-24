@@ -1,8 +1,10 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SocialWeb.Application.Models.DTOs;
@@ -18,13 +20,15 @@ namespace SocialWeb.Application.Services.Concrete
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IFollowService _followService;
 
-        public AppUserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AppUserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IFollowService followService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _followService = followService;
         }
         public async Task DeleteUser(params object[] parameters)
         {
@@ -39,7 +43,7 @@ namespace SocialWeb.Application.Services.Concrete
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, isPersistent : false);
+                await _signInManager.SignInAsync(user, isPersistent: false);
             }
 
             return result;
@@ -64,7 +68,7 @@ namespace SocialWeb.Application.Services.Concrete
 
         public async Task<SignInResult> ExternalLoginSignIn(string provider, string key)
         {
-            return await _signInManager.ExternalLoginSignInAsync(provider, key, isPersistent : false, bypassTwoFactor : true);
+            return await _signInManager.ExternalLoginSignInAsync(provider, key, isPersistent: false, bypassTwoFactor: true);
         }
 
         public async Task<IdentityResult> ExternalRegister(ExternalLoginInfo info, ExternalLoginDto model)
@@ -76,7 +80,7 @@ namespace SocialWeb.Application.Services.Concrete
                 result = await _userManager.AddLoginAsync(user, info);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent : false);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                 }
             }
             else
@@ -89,7 +93,7 @@ namespace SocialWeb.Application.Services.Concrete
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent : false);
+                        await _signInManager.SignInAsync(user, isPersistent: false);
                     }
                 }
             }
@@ -127,11 +131,12 @@ namespace SocialWeb.Application.Services.Concrete
                 {
                     var isUserNameExist = await _userManager.FindByNameAsync(model.UserName);
 
-                    if (isUserNameExist == null){
+                    if (isUserNameExist == null)
+                    {
                         await _userManager.SetUserNameAsync(user, model.UserName);
                         user.UserName = model.UserName;
                         await _signInManager.SignInAsync(user, isPersistent: true);
-                        }
+                    }
                 }
                 if (model.Name != user.Name)
                 {
@@ -155,13 +160,13 @@ namespace SocialWeb.Application.Services.Concrete
                 selector: y => new ProfileSummaryDto
                 {
                     UserName = y.UserName,
-                        Name = y.Name,
-                        ImagePath = y.ImagePath,
-                        TweetsCount = y.Tweets.Count,
-                        FollowersCount = y.Followers.Count,
-                        FollowingsCount = y.Followings.Count
+                    Name = y.Name,
+                    ImagePath = y.ImagePath,
+                    TweetsCount = y.Tweets.Count,
+                    FollowersCount = y.Followers.Count,
+                    FollowingsCount = y.Followings.Count
                 },
-                predicate : x => x.UserName == userName);
+                predicate: x => x.UserName == userName);
 
             return user;
         }
@@ -184,15 +189,55 @@ namespace SocialWeb.Application.Services.Concrete
                 selector: x => new SearchUserDto
                 {
                     Id = x.Id,
-                        Name = x.Name,
-                        UserName = x.UserName,
-                        ImagePath = x.ImagePath
+                    Name = x.Name,
+                    UserName = x.UserName,
+                    ImagePath = x.ImagePath
                 },
-                predicate : x => x.UserName.Contains(keyword) || x.Name.Contains(keyword),
-                pageIndex : pageIndex,
-                pageSize : 10);
+                predicate: x => x.UserName.Contains(keyword) || x.Name.Contains(keyword),
+                pageIndex: pageIndex,
+                pageSize: 10);
 
             return users;
         }
+        public async Task<List<FollowListVm>> UsersFollowings(int id, int pageIndex)
+        {
+
+            List<int> followings = await _followService.FollowingList(id);
+
+            var followingsList = await _unitOfWork.AppUser.GetFilteredList(selector: y => new FollowListVm
+            {
+                Id = y.Id,
+                ImagePath = y.ImagePath,
+                UserName = y.UserName,
+                Name = y.Name,
+            },
+                predicate: x => followings.Contains(x.Id),
+                include: x => x
+               .Include(z => z.Followers),
+                pageIndex: pageIndex);
+            return followingsList;
+
+        }
+
+        public async Task<List<FollowListVm>> UsersFollowers(int id, int pageIndex)
+        {
+
+            List<int> followers = await _followService.FollowerList(id);
+
+            var followersList = await _unitOfWork.AppUser.GetFilteredList(selector: y => new FollowListVm
+            {
+                Id = y.Id,
+                ImagePath = y.ImagePath,
+                UserName = y.UserName,
+                Name = y.Name,
+            },
+                predicate: x => followers.Contains(x.Id),
+                include: x => x
+               .Include(z => z.Followers),
+                pageIndex: pageIndex);
+            return followersList;
+
+        }
+
     }
 }

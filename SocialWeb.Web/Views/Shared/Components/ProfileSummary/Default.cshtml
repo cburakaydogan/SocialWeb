@@ -22,8 +22,8 @@
             <div class="profile-cover__info">
                 <ul class="nav">
                     <li><strong>@Model.TweetsCount</strong>Tweets</li>
-                    <li id="FollowersCount"><strong>@Model.FollowingsCount</strong>Followers</li>
-                    <li id="FollowingsCount"><strong>@Model.FollowersCount</strong>Following</li>
+                    <li id="FollowersCount"><strong>@Model.FollowingsCount</strong><a style="color: #999;"  asp-controller="Profile" asp-action="Followers" asp-route-username="@Model.UserName">Followers</a></li>
+                    <li id="FollowingsCount"><strong>@Model.FollowersCount</strong><a style="color: #999;"  asp-controller="Profile" asp-action="Followings" asp-route-username="@Model.UserName">Followings</a></li>
                 </ul>
             </div>
         </div>
