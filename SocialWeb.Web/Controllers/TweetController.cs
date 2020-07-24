@@ -65,11 +65,18 @@ namespace SocialWeb.Web.Controllers
 
             else
             {
-                var tweets = await _tweetService.UsersTweets(userName, pageIndex);
+                var tweets = await _tweetService.UsersTweets(userName,User.GetUserId(), pageIndex);
 
                 return Json(tweets, new JsonSerializerSettings());
             }
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteTweet(int id)
+        {
+            await _tweetService.DeleteTweet(id, User.GetUserId());
+
+            return Json("");
         }
 
     }

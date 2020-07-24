@@ -29,7 +29,7 @@ namespace SocialWeb.Application.Services.Concrete
             _appUserService = appUserService;
         }
 
-        public async Task<List<TimelineVm>> UsersTweets(string userName,int pageIndex)
+        public async Task<List<TimelineVm>> UsersTweets(string userName,int id,int pageIndex)
         {
             var userId = await _appUserService.UserIdFromName(userName);
             var tweets = await _unitOfWork.Tweet.GetFilteredList(
@@ -46,7 +46,7 @@ namespace SocialWeb.Application.Services.Concrete
                     UserName = y.AppUser.Name,
                     UserImage = y.AppUser.ImagePath,
                     Name = y.AppUser.Name,
-                    isLiked = y.Likes.Any(z => z.AppUserId == userId)
+                    isLiked = y.Likes.Any(z => z.AppUserId == id)
                 },
                 orderBy: z => z.OrderByDescending(x => x.CreateDate),
                 predicate: x => x.AppUserId == userId,
@@ -168,6 +168,17 @@ namespace SocialWeb.Application.Services.Concrete
             //.Include(x => x.Mentions).ProjectTo<TweetDetailVm>(_mapper.ConfigurationProvider, new { userId }).FirstOrDefaultAsync();
 
             return tweet;
+        }
+
+        public async Task DeleteTweet(int id, int userId)
+        {
+
+            var tweet = await _unitOfWork.Tweet.FirstOrDefault(x=> x.Id == id);
+
+            if(userId == tweet.AppUserId){
+                _unitOfWork.Tweet.Delete(tweet);
+                await _unitOfWork.Commit();
+            }
         }
 
     }

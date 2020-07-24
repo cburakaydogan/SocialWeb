@@ -17,6 +17,7 @@
 
 @section Scripts {
    <script> var userName = '@(ViewBag.userName)';
+            var authUser = '@(User.Identity.Name)';
    </script>
     <script src="~/js/get-tweets.js"></script>
 }

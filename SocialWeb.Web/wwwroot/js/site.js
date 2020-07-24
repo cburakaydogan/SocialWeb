@@ -29,6 +29,25 @@
     return "<1m";
 }
 
+function DeleteTweet(id) {
+  
+    var model = {
+        TweetId: id,
+    };
+    $.ajax({
+        data: {id: id},
+        type: "POST",
+        url: "/Tweet/DeleteTweet/",
+        dataType: "JSON",
+        headers: {
+            RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+        },
+        success: function (result) {
+            $("#tweet_"+id).remove();
+        }
+    });
+}
+
 function Like(id) {
     let $likecount = $("#likecount_" + id);
     let likecount = Number($likecount.val() + $likecount.next().text()) || 0;
@@ -49,7 +68,7 @@ function Like(id) {
         success: function (result) {
             if (result == "Success") {
                 likecount = likecount + 1;
-                let html = '<a onclick="Unlike(' + id + ')"id="' + id + '"><i class="fa fa-heart"></i><span id="likecount' + id + '">' + likecount + '</span></a>';
+                let html = '<a onclick="Unlike(' + id + ')"id="' + id + '"> <i class="fa fa-heart"></i><span id="likecount' + id + '">' + likecount + '</span></a>';
 
                 $("#" + id).replaceWith(html);
             }
@@ -78,7 +97,7 @@ function Unlike(id) {
                 if (likecount != 0)
                     likecount = likecount - 1;
 
-                let html = '<a onclick="Like(' + id + ')"id="' + id + '"><i class="fa fa-heart-o"></i><span id="likecount' + id + '">' + likecount + '</span></a>';
+                let html = '<a onclick="Like(' + id + ')"id="' + id + '"> <i class="fa fa-heart-o"></i><span id="likecount' + id + '">' + likecount + '</span></a>';
 
                 $("#" + id).replaceWith(html);
             }
