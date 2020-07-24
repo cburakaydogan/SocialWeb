@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SocialWeb.Application.Services.Abstract;
-using SocialWeb.Application.Services.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SocialWeb.Web.ViewComponents

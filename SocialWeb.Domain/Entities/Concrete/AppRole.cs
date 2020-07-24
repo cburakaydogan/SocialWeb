@@ -2,8 +2,6 @@
 using SocialWeb.Domain.Enums;
 using System;
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SocialWeb.Domain.Entities.Concrete
 {

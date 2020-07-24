@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Domain.Entities.Concrete;

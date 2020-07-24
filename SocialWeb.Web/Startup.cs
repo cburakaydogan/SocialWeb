@@ -33,37 +33,26 @@ namespace SocialWeb.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer(
-                   Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddIdentity<AppUser, AppRole>(x =>
-            {
-                x.SignIn.RequireConfirmedPhoneNumber = false;
-                x.SignIn.RequireConfirmedAccount = false;
-                x.SignIn.RequireConfirmedEmail = false;
-                x.User.RequireUniqueEmail = true;
-                x.Password.RequiredLength = 1;
-                x.Password.RequiredUniqueChars = 0;
-                x.Password.RequireUppercase = false;
-                x.Password.RequireNonAlphanumeric = false;
-                x.Password.RequireLowercase = false;
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAuthentication().AddGoogle(options =>
             {
                 IConfigurationSection googleAuthNSection =
-               Configuration.GetSection("Authentication:Google");
+                    Configuration.GetSection("Authentication:Google");
                 options.ClientId = googleAuthNSection["ClientId"];
                 options.ClientSecret = googleAuthNSection["ClientSecret"];
             });
 
             services.RegisterServices();
-            services.AddControllersWithViews().AddNewtonsoftJson()
+            
+             services.AddControllersWithViews().AddNewtonsoftJson()
                 .AddFluentValidation();
             services.AddTransient<IValidator<RegisterDto>, RegisterValidation>();
             services.AddTransient<IValidator<LoginDto>, LoginValidation>();
             services.AddTransient<IValidator<ExternalLoginDto>, ExternalLoginValidation>();
             services.AddTransient<IValidator<SendTweetDto>, TweetValidation>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -87,16 +76,16 @@ namespace SocialWeb.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(name: "search",
-               pattern: "search/{keyword}",
-               defaults: new { controller = "Search", action = "Index" });
+                    pattern: "search/{keyword}",
+                    defaults : new { controller = "Search", action = "Index" });
 
-               endpoints.MapControllerRoute(name: "profile",
-               pattern: "profile/{userName}",
-               defaults: new { controller = "Profile", action = "Detail" });
+                endpoints.MapControllerRoute(name: "profile",
+                    pattern: "profile/{userName}",
+                    defaults : new { controller = "Profile", action = "Detail" });
 
                 endpoints.MapControllerRoute(name: "tweet",
-               pattern: "tweet/{id}",
-               defaults: new { controller = "Tweet", action = "TweetDetail" });
+                    pattern: "tweet/{id}",
+                    defaults : new { controller = "Tweet", action = "TweetDetail" });
 
                 endpoints.MapControllerRoute(
                     name: "default",

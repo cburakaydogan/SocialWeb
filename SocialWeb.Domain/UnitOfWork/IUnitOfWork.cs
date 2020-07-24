@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using SocialWeb.Domain.Entities.Concrete;
 using SocialWeb.Domain.Repositories;
 
 namespace SocialWeb.Domain.UnitOfWork

@@ -1,9 +1,5 @@
-﻿using System.ComponentModel;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 
 namespace SocialWeb.Application.Models.DTOs

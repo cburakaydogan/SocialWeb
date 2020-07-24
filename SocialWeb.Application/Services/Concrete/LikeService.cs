@@ -3,9 +3,6 @@ using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Application.Services.Abstract;
 using SocialWeb.Domain.Entities.Concrete;
 using SocialWeb.Domain.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SocialWeb.Application.Services.Concrete

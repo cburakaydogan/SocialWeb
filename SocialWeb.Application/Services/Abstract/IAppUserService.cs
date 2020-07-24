@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using SocialWeb.Application.Models.DTOs;
-using SocialWeb.Domain.Entities.Concrete;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

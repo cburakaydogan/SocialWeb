@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore.Query;
 using SocialWeb.Domain.Entities.Abstract;
 using SocialWeb.Domain.Repositories;
 using SocialWeb.Infrastructure.Context;
-using Microsoft.EntityFrameworkCore.Internal;
-using AutoMapper.QueryableExtensions;
 
 namespace SocialWeb.Infrastructure.Repositories
 {

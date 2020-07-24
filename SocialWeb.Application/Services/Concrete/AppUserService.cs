@@ -1,21 +1,14 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using SocialWeb.Application.AutoMapper;
 using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Application.Services.Abstract;
 using SocialWeb.Domain.Entities.Concrete;
 using SocialWeb.Domain.UnitOfWork;
-using SocialWeb.Infrastructure.Context;
 
 namespace SocialWeb.Application.Services.Concrete
 {

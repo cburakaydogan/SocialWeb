@@ -1,9 +1,5 @@
 ﻿using FluentValidation;
 using SocialWeb.Application.Models.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
 
 namespace SocialWeb.Application.Validation.FluentValidation
 {

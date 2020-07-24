@@ -1,5 +1,3 @@
-using System;
-using System.Security.Claims;
 
 namespace System.Security.Claims
 {

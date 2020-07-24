@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using SixLabors.ImageSharp;
@@ -12,7 +11,6 @@ using SocialWeb.Application.Models.DTOs;
 using SocialWeb.Application.Services.Abstract;
 using SocialWeb.Domain.Entities.Concrete;
 using SocialWeb.Domain.UnitOfWork;
-using SocialWeb.Infrastructure.Context;
 
 namespace SocialWeb.Application.Services.Concrete
 {
