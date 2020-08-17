@@ -1,8 +1,7 @@
 # SocialWeb
 A small social networking project with ASP.NET Core.
 
-#### Patterns and Principles:
-- Onion Architecture
+#### Patterns:
 - Generic Repository Pattern
 - Unit Of Work Pattern
 
